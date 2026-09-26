@@ -27,9 +27,9 @@ export function GuildConfigForm({
           body: JSON.stringify({ prefix }),
         });
         if (!res.ok) throw new Error();
-        show("Changes saved");
+        show("Modifications enregistrées");
       } catch {
-        show("Couldn't save — bot may be offline", "error");
+        show("Échec de l'enregistrement — le bot est peut-être hors ligne", "error");
       }
     });
   }
@@ -37,7 +37,7 @@ export function GuildConfigForm({
   return (
     <div className="space-y-3">
       <div>
-        <Label htmlFor="prefix">Command prefix</Label>
+        <Label htmlFor="prefix">Préfixe de commande</Label>
         <Input
           id="prefix"
           value={prefix}
@@ -47,7 +47,7 @@ export function GuildConfigForm({
         />
       </div>
       <Button onClick={save} loading={pending} size="sm">
-        Save
+        Enregistrer
       </Button>
     </div>
   );

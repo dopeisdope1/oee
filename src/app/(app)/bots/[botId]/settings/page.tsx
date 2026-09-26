@@ -19,10 +19,10 @@ export default async function BotSettingsPage({
   return (
     <div className="max-w-2xl space-y-6">
       <Card>
-        <CardTitle>Identity</CardTitle>
+        <CardTitle>Identité</CardTitle>
         <CardDescription>
-          How this bot is labeled inside the panel. This doesn&apos;t change the
-          bot&apos;s actual Discord profile — there&apos;s no API for that yet.
+          La façon dont ce bot est étiqueté dans le panneau. Cela ne modifie
+          pas le vrai profil Discord du bot — il n&apos;y a pas encore d&apos;API pour ça.
         </CardDescription>
         <div className="mt-4">
           <BotIdentityForm
@@ -34,38 +34,38 @@ export default async function BotSettingsPage({
       </Card>
 
       <Card>
-        <CardTitle>Connection</CardTitle>
+        <CardTitle>Connexion</CardTitle>
         <CardDescription>
           {summary.configured
-            ? "This bot has an API URL configured."
-            : "No API URL configured yet for this bot — set BOT_n_API_URL in the panel's environment."}
+            ? "Ce bot a une URL d'API configurée."
+            : "Aucune URL d'API configurée pour ce bot — définis BOT_n_API_URL dans l'environnement du panneau."}
         </CardDescription>
         <dl className="mt-4 space-y-2 text-sm">
           <div className="flex justify-between gap-4">
-            <dt className="text-foreground-subtle">API base URL</dt>
+            <dt className="text-foreground-subtle">URL de base de l&apos;API</dt>
             <dd className="truncate text-foreground">{record.apiBaseUrl || "—"}</dd>
           </div>
           <div className="flex justify-between gap-4">
-            <dt className="text-foreground-subtle">API key env var</dt>
+            <dt className="text-foreground-subtle">Variable d&apos;environnement de la clé d&apos;API</dt>
             <dd className="text-foreground">
               <code className="text-xs">{record.apiKeyRef}</code>
             </dd>
           </div>
           <div className="flex justify-between gap-4">
-            <dt className="text-foreground-subtle">Status</dt>
+            <dt className="text-foreground-subtle">Statut</dt>
             <dd className="text-foreground">{summary.status.state}</dd>
           </div>
         </dl>
         <p className="mt-3 text-xs text-foreground-subtle">
-          The API key itself is never shown here — it&apos;s read from the server
-          environment and never sent to the browser.
+          La clé d&apos;API elle-même n&apos;est jamais affichée ici — elle est lue
+          depuis l&apos;environnement du serveur et n&apos;est jamais envoyée au navigateur.
         </p>
       </Card>
 
       <Card>
-        <CardTitle>Integrations</CardTitle>
+        <CardTitle>Intégrations</CardTitle>
         <CardDescription>
-          No additional integrations configured for this bot yet.
+          Aucune intégration supplémentaire configurée pour ce bot pour l&apos;instant.
         </CardDescription>
       </Card>
     </div>

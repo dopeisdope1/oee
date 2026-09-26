@@ -29,7 +29,7 @@ export default async function SystemsPage({
     return liveGuilds.error ? (
       <ErrorState code={liveGuilds.error} />
     ) : (
-      <EmptyState icon={Server} title="This bot isn't in any server yet" />
+      <EmptyState icon={Server} title="Ce bot n'est encore sur aucun serveur" />
     );
   }
 
@@ -60,13 +60,13 @@ export default async function SystemsPage({
       {systemsResult.error && !fallbackNotice ? (
         <ErrorState code={systemsResult.error} />
       ) : systems.length === 0 ? (
-        <EmptyState title="No systems configured for this bot yet" />
+        <EmptyState title="Aucun système configuré pour ce bot pour l'instant" />
       ) : (
         <>
           {fallbackNotice && (
             <p className="text-sm text-foreground-subtle">
-              This bot hasn&apos;t implemented the Systems API yet — showing the
-              starter catalog, all disabled, so you can see what&apos;s planned.
+              Ce bot n&apos;a pas encore implémenté l&apos;API Systèmes — affichage
+              du catalogue de départ, tous désactivés, pour que tu voies ce qui est prévu.
             </p>
           )}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

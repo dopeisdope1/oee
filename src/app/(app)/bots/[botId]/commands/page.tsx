@@ -27,7 +27,7 @@ export default async function CommandsPage({
     return liveGuilds.error ? (
       <ErrorState code={liveGuilds.error} />
     ) : (
-      <EmptyState icon={Server} title="This bot isn't in any server yet" />
+      <EmptyState icon={Server} title="Ce bot n'est encore sur aucun serveur" />
     );
   }
 
@@ -43,7 +43,7 @@ export default async function CommandsPage({
       {!commands ? (
         <ErrorState code={commandsResult.error ?? "unknown"} />
       ) : commands.length === 0 ? (
-        <EmptyState title="No commands reported by this bot yet" />
+        <EmptyState title="Aucune commande signalée par ce bot pour l'instant" />
       ) : (
         <CommandsTable
           botId={botId}

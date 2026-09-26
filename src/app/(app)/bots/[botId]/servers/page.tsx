@@ -24,12 +24,12 @@ export default async function ServersPage({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-sm font-semibold text-foreground">Servers</h2>
+      <h2 className="text-sm font-semibold text-foreground">Serveurs</h2>
 
       {!result.data ? (
         <ErrorState code={result.error ?? "unknown"} />
       ) : result.data.length === 0 ? (
-        <EmptyState icon={Server} title="This bot isn't in any server yet" />
+        <EmptyState icon={Server} title="Ce bot n'est encore sur aucun serveur" />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {result.data.map((guild) => (

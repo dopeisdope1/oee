@@ -24,7 +24,7 @@ export function LivePreviewPanel({ data }: { data: LivePreviewData }) {
   return (
     <div className="rounded-xl border border-border bg-background p-4">
       <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-foreground-subtle">
-        Live preview
+        Aperçu en direct
       </p>
       <div className="flex gap-3 rounded-lg bg-surface p-3">
         <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent/20 text-xs font-semibold text-accent">
@@ -90,7 +90,7 @@ export function LivePreviewPanel({ data }: { data: LivePreviewData }) {
                     "rounded-md border border-border bg-surface-hover px-3 py-1 text-xs font-medium text-foreground"
                   )}
                 >
-                  {btn.label || "Button"}
+                  {btn.label || "Bouton"}
                 </span>
               ))}
             </div>

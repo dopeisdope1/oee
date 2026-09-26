@@ -2,10 +2,10 @@ import { cn } from "@/lib/utils";
 import type { BotState } from "@/types";
 
 const STATE_STYLES: Record<BotState, { dot: string; label: string; text: string }> = {
-  online: { dot: "bg-success", text: "text-success", label: "Online" },
-  connecting: { dot: "bg-warning", text: "text-warning", label: "Connecting" },
-  offline: { dot: "bg-danger", text: "text-danger", label: "Offline" },
-  unknown: { dot: "bg-foreground-subtle", text: "text-foreground-subtle", label: "Unknown" },
+  online: { dot: "bg-success", text: "text-success", label: "En ligne" },
+  connecting: { dot: "bg-warning", text: "text-warning", label: "Connexion..." },
+  offline: { dot: "bg-danger", text: "text-danger", label: "Hors ligne" },
+  unknown: { dot: "bg-foreground-subtle", text: "text-foreground-subtle", label: "Inconnu" },
 };
 
 export function StatusBadge({

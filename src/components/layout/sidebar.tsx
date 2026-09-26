@@ -31,7 +31,7 @@ export function Sidebar({ bots }: { bots: BotSummary[] }) {
         <button
           onClick={toggleCollapsed}
           className="hidden rounded-md p-1.5 text-foreground-muted hover:bg-surface-hover hover:text-foreground lg:block"
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-label={collapsed ? "Développer la barre latérale" : "Réduire la barre latérale"}
         >
           {collapsed ? (
             <PanelLeftOpen className="size-4" />
@@ -43,12 +43,12 @@ export function Sidebar({ bots }: { bots: BotSummary[] }) {
 
       <nav className="flex-1 overflow-y-auto px-2 py-3">
         <NavLink href="/dashboard" icon={LayoutDashboard} active={pathname === "/dashboard"} collapsed={collapsed}>
-          Dashboard
+          Tableau de bord
         </NavLink>
 
         {!collapsed && (
           <p className="mt-4 mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-foreground-subtle">
-            My Bots
+            Mes bots
           </p>
         )}
         <div className="space-y-0.5">
@@ -117,7 +117,7 @@ export function Sidebar({ bots }: { bots: BotSummary[] }) {
 
         <div className="mt-4 border-t border-border pt-3">
           <NavLink href="/settings" icon={SettingsIcon} active={pathname === "/settings"} collapsed={collapsed}>
-            Panel settings
+            Paramètres du panneau
           </NavLink>
         </div>
       </nav>

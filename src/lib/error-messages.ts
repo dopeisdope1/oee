@@ -13,40 +13,40 @@ export type ErrorKind =
 const COPY: Record<ErrorKind, { icon: LucideIcon; title: string; description: string }> = {
   not_configured: {
     icon: Plug,
-    title: "Bot not configured yet",
+    title: "Bot pas encore configuré",
     description:
-      "This bot has no API URL/key set. Add BOT_n_API_URL and BOT_n_API_KEY to the panel's environment, then reseed.",
+      "Ce bot n'a pas d'URL/clé d'API définie. Ajoute BOT_n_API_URL et BOT_n_API_KEY à l'environnement du panneau, puis relance le seed.",
   },
   not_capable: {
     icon: Plug,
-    title: "Not available on this bot yet",
+    title: "Pas encore disponible sur ce bot",
     description:
-      "This bot's API doesn't implement this feature yet. Add the matching endpoint (see the architecture doc) to enable it here.",
+      "L'API de ce bot n'implémente pas encore cette fonctionnalité. Ajoute l'endpoint correspondant (voir le document d'architecture) pour l'activer ici.",
   },
   offline: {
     icon: WifiOff,
-    title: "Bot unreachable",
-    description: "Couldn't reach this bot's API. It may be offline or the VPS may be unreachable from the panel.",
+    title: "Bot injoignable",
+    description: "Impossible de joindre l'API de ce bot. Il est peut-être hors ligne ou le VPS est injoignable depuis le panneau.",
   },
   unauthorized: {
     icon: ShieldAlert,
-    title: "Rejected by the bot",
-    description: "The bot's API rejected the panel's credentials. Check that BOT_n_API_KEY matches on both sides.",
+    title: "Rejeté par le bot",
+    description: "L'API du bot a rejeté les identifiants du panneau. Vérifie que BOT_n_API_KEY correspond des deux côtés.",
   },
   network_error: {
     icon: WifiOff,
-    title: "Network error",
-    description: "The request to the bot failed before getting a response.",
+    title: "Erreur réseau",
+    description: "La requête vers le bot a échoué avant d'obtenir une réponse.",
   },
   bad_response: {
     icon: AlertTriangle,
-    title: "Unexpected response",
-    description: "The bot responded, but not in the format the panel expected.",
+    title: "Réponse inattendue",
+    description: "Le bot a répondu, mais pas dans le format attendu par le panneau.",
   },
   unknown: {
     icon: AlertTriangle,
-    title: "Something went wrong",
-    description: "An unexpected error occurred.",
+    title: "Une erreur est survenue",
+    description: "Une erreur inattendue s'est produite.",
   },
 };
 

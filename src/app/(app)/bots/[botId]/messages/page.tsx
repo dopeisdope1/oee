@@ -31,7 +31,7 @@ export default async function MessagesPage({
     return liveGuilds.error ? (
       <ErrorState code={liveGuilds.error} />
     ) : (
-      <EmptyState icon={Server} title="This bot isn't in any server yet" />
+      <EmptyState icon={Server} title="Ce bot n'est encore sur aucun serveur" />
     );
   }
 
@@ -42,9 +42,9 @@ export default async function MessagesPage({
       <GuildTabs botId={botId} section="messages" guilds={guilds} activeGuildId={activeGuildId} />
 
       <p className="text-sm text-foreground-subtle">
-        Edit the message and embed templates this bot sends. Availability is
-        checked per template — a bot that hasn&apos;t implemented a given key
-        yet will say so honestly when you open it.
+        Modifie les modèles de message et d&apos;embed envoyés par ce bot. La
+        disponibilité est vérifiée par modèle — un bot qui n&apos;a pas encore
+        implémenté une clé donnée te le dira honnêtement quand tu l&apos;ouvriras.
       </p>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -60,7 +60,7 @@ export default async function MessagesPage({
               href={`/bots/${botId}/messages/${def.key}?guildId=${encodeURIComponent(activeGuildId)}`}
               className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "mt-4 w-full")}
             >
-              Edit
+              Modifier
             </Link>
           </Card>
         ))}

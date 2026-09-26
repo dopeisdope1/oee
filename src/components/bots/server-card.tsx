@@ -18,7 +18,7 @@ export function ServerCard({ botId, guild }: { botId: string; guild: Guild }) {
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-foreground">{guild.name}</p>
             <p className="text-xs text-foreground-subtle">
-              {guild.memberCount != null ? `${guild.memberCount} members` : "Member count unavailable"}
+              {guild.memberCount != null ? `${guild.memberCount} membres` : "Nombre de membres indisponible"}
             </p>
           </div>
         </div>

@@ -21,48 +21,48 @@ export default async function LandingPage() {
           href={session ? "/dashboard" : "/login"}
           className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
         >
-          {session ? "Dashboard" : "Login"}
+          {session ? "Tableau de bord" : "Connexion"}
         </Link>
       </header>
 
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center px-6 py-16 text-center">
         <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          Manage all your Discord bots from one place.
+          Gère tous tes bots Discord depuis un seul endroit.
         </h1>
         <p className="mt-4 max-w-xl text-foreground-muted">
-          A single control panel for the Discord bots you already run — status,
-          commands, systems, servers, messages, logs and statistics, per bot,
-          without mixing anything up.
+          Un panneau de contrôle unique pour les bots Discord que tu fais déjà
+          tourner — statut, commandes, systèmes, serveurs, messages, journaux
+          et statistiques, par bot, sans jamais tout mélanger.
         </p>
 
         <Link
           href={session ? "/dashboard" : "/login"}
           className={cn(buttonVariants({ size: "lg" }), "mt-8")}
         >
-          {session ? "Go to dashboard" : "Sign in with Discord"}
+          {session ? "Accéder au tableau de bord" : "Se connecter avec Discord"}
           <ArrowRight className="size-4" />
         </Link>
 
         <div className="mt-16 grid w-full gap-4 text-left sm:grid-cols-2">
           <Feature
             icon={LayoutDashboard}
-            title="One dashboard, four bots"
-            description="Switch between your bots without ever mixing their servers, commands or configuration."
+            title="Un tableau de bord, quatre bots"
+            description="Passe d'un bot à l'autre sans jamais mélanger leurs serveurs, commandes ou configuration."
           />
           <Feature
             icon={ToggleLeft}
-            title="Systems you can toggle"
-            description="Welcome messages, moderation, tickets and more — enabled per server, with live preview."
+            title="Des systèmes que tu peux activer ou désactiver"
+            description="Messages de bienvenue, modération, tickets et plus — activables par serveur, avec aperçu en direct."
           />
           <Feature
             icon={ScrollText}
-            title="Real logs, real statistics"
-            description="What you see is what your bots report — never invented numbers or a fake 'online' status."
+            title="Vrais journaux, vraies statistiques"
+            description="Ce que tu vois, c'est ce que tes bots rapportent — jamais de chiffres inventés ni de faux statut « en ligne »."
           />
           <Feature
             icon={ShieldCheck}
-            title="Secrets stay on the server"
-            description="Bot tokens and API keys never reach the browser. Every action is authenticated and audited."
+            title="Les secrets restent sur le serveur"
+            description="Les tokens de bot et clés d'API n'atteignent jamais le navigateur. Chaque action est authentifiée et auditée."
           />
         </div>
       </main>

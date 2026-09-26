@@ -22,14 +22,14 @@ export interface BotNavItem {
 // available yet" state on that page, same principle as the rest of the
 // panel: never hide a section, never fake what's inside it.
 export const BOT_NAV_ITEMS: BotNavItem[] = [
-  { label: "Overview", segment: "overview", icon: LayoutGrid, group: "Vue d'ensemble" },
-  { label: "Servers", segment: "servers", icon: Server, group: "Vue d'ensemble" },
-  { label: "Commands", segment: "commands", icon: SlashSquare, group: "Gestion" },
-  { label: "Systems", segment: "systems", icon: ToggleLeft, group: "Gestion" },
+  { label: "Tableau de bord", segment: "overview", icon: LayoutGrid, group: "Vue d'ensemble" },
+  { label: "Serveurs", segment: "servers", icon: Server, group: "Vue d'ensemble" },
+  { label: "Commandes", segment: "commands", icon: SlashSquare, group: "Gestion" },
+  { label: "Systèmes", segment: "systems", icon: ToggleLeft, group: "Gestion" },
   { label: "Messages", segment: "messages", icon: MessageSquare, group: "Gestion" },
-  { label: "Logs", segment: "logs", icon: ScrollText, group: "Suivi" },
-  { label: "Statistics", segment: "statistics", icon: BarChart3, group: "Suivi" },
-  { label: "Settings", segment: "settings", icon: SettingsIcon, group: "Configuration" },
+  { label: "Journaux", segment: "logs", icon: ScrollText, group: "Suivi" },
+  { label: "Statistiques", segment: "statistics", icon: BarChart3, group: "Suivi" },
+  { label: "Paramètres", segment: "settings", icon: SettingsIcon, group: "Configuration" },
 ];
 
 export const BOT_NAV_GROUP_DOTS: Record<string, string> = {

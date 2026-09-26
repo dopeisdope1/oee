@@ -28,9 +28,9 @@ export function BotIdentityForm({
           body: JSON.stringify({ name, avatarUrl: avatarUrl || null }),
         });
         if (!res.ok) throw new Error();
-        show("Changes saved");
+        show("Modifications enregistrées");
       } catch {
-        show("Couldn't save changes", "error");
+        show("Échec de l'enregistrement des modifications", "error");
       }
     });
   }
@@ -38,11 +38,11 @@ export function BotIdentityForm({
   return (
     <div className="space-y-4">
       <div>
-        <Label htmlFor="name">Display name</Label>
+        <Label htmlFor="name">Nom affiché</Label>
         <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
       </div>
       <div>
-        <Label htmlFor="avatarUrl">Avatar URL</Label>
+        <Label htmlFor="avatarUrl">URL de l&apos;avatar</Label>
         <Input
           id="avatarUrl"
           value={avatarUrl}
@@ -51,7 +51,7 @@ export function BotIdentityForm({
         />
       </div>
       <Button onClick={save} loading={pending}>
-        Save changes
+        Enregistrer les modifications
       </Button>
     </div>
   );

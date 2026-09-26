@@ -44,13 +44,13 @@ export default async function LogsPage({
       <form className="flex flex-wrap items-end gap-2" method="get">
         <div>
           <label className="mb-1.5 block text-xs font-medium text-foreground-muted">
-            Search
+            Recherche
           </label>
           <input
             type="text"
             name="search"
             defaultValue={sp.search ?? ""}
-            placeholder="Search messages..."
+            placeholder="Rechercher des messages..."
             className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
           />
         </div>
@@ -61,7 +61,7 @@ export default async function LogsPage({
             defaultValue={sp.type ?? ""}
             className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
           >
-            <option value="">All</option>
+            <option value="">Tous</option>
             {TYPES.map((t) => (
               <option key={t} value={t}>
                 {t}
@@ -70,13 +70,13 @@ export default async function LogsPage({
           </select>
         </div>
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-foreground-muted">Level</label>
+          <label className="mb-1.5 block text-xs font-medium text-foreground-muted">Niveau</label>
           <select
             name="level"
             defaultValue={sp.level ?? ""}
             className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
           >
-            <option value="">All</option>
+            <option value="">Tous</option>
             {LEVELS.map((l) => (
               <option key={l} value={l}>
                 {l}
@@ -85,7 +85,7 @@ export default async function LogsPage({
           </select>
         </div>
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-foreground-muted">From</label>
+          <label className="mb-1.5 block text-xs font-medium text-foreground-muted">Du</label>
           <input
             type="date"
             name="from"
@@ -94,7 +94,7 @@ export default async function LogsPage({
           />
         </div>
         <div>
-          <label className="mb-1.5 block text-xs font-medium text-foreground-muted">To</label>
+          <label className="mb-1.5 block text-xs font-medium text-foreground-muted">Au</label>
           <input
             type="date"
             name="to"
@@ -106,14 +106,14 @@ export default async function LogsPage({
           type="submit"
           className="h-9 rounded-lg border border-border bg-surface px-4 text-sm font-medium text-foreground hover:bg-surface-hover"
         >
-          Filter
+          Filtrer
         </button>
       </form>
 
       {!result.data ? (
         <ErrorState code={result.error ?? "unknown"} />
       ) : result.data.length === 0 ? (
-        <EmptyState icon={ScrollText} title="No log entries match these filters" />
+        <EmptyState icon={ScrollText} title="Aucune entrée de journal ne correspond à ces filtres" />
       ) : (
         <LogTable entries={result.data} />
       )}

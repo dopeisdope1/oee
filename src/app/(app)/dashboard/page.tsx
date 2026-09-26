@@ -18,21 +18,21 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-lg font-semibold text-foreground">Overview</h1>
-        <p className="text-sm text-foreground-muted">All your bots, at a glance.</p>
+        <h1 className="text-lg font-semibold text-foreground">Vue d&apos;ensemble</h1>
+        <p className="text-sm text-foreground-muted">Tous tes bots, en un coup d&apos;œil.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <SummaryStat label="Bots" value={bots.length} />
-        <SummaryStat label="Online" value={online} />
-        <SummaryStat label="Servers" value={totalServers} />
-        <SummaryStat label="Commands" value={totalCommands} />
+        <SummaryStat label="En ligne" value={online} />
+        <SummaryStat label="Serveurs" value={totalServers} />
+        <SummaryStat label="Commandes" value={totalCommands} />
       </div>
 
       {bots.length === 0 ? (
         <EmptyState
-          title="No bots configured yet"
-          description="Add BOT_1_NAME (and its API URL/key) to the panel's environment and reseed to see it here."
+          title="Aucun bot configuré pour l'instant"
+          description="Ajoute BOT_1_NAME (ainsi que son URL/clé d'API) à l'environnement du panneau puis relance le seed pour le voir ici."
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -43,12 +43,12 @@ export default async function DashboardPage() {
       )}
 
       <div>
-        <h2 className="mb-3 text-sm font-semibold text-foreground">Recent activity</h2>
+        <h2 className="mb-3 text-sm font-semibold text-foreground">Activité récente</h2>
         {activity.length === 0 ? (
           <EmptyState
             icon={Activity}
-            title="No activity yet"
-            description="Once your bots report events, they'll show up here."
+            title="Aucune activité pour l'instant"
+            description="Dès que tes bots signaleront des événements, ils apparaîtront ici."
           />
         ) : (
           <Card className="divide-y divide-border p-0">

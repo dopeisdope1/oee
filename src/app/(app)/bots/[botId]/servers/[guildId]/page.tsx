@@ -28,14 +28,14 @@ export default async function ServerDetailPage({
           {guild?.name ?? guildId}
         </h2>
         {guild?.memberCount != null && (
-          <p className="text-sm text-foreground-muted">{guild.memberCount} members</p>
+          <p className="text-sm text-foreground-muted">{guild.memberCount} membres</p>
         )}
       </div>
 
       <Card>
         <CardTitle>Configuration</CardTitle>
         <CardDescription>
-          Specific to this server only — changes here never affect any other server this bot is in.
+          Spécifique à ce serveur uniquement — les modifications ici n&apos;affectent jamais aucun autre serveur où se trouve ce bot.
         </CardDescription>
 
         <div className="mt-4">

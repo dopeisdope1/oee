@@ -60,8 +60,8 @@ export default async function StatisticsPage({
         <Card>
           <EmptyState
             icon={BarChart3}
-            title="No statistics for this bot yet"
-            description="This bot hasn't implemented the statistics API yet."
+            title="Pas encore de statistiques pour ce bot"
+            description="Ce bot n'a pas encore implémenté l'API de statistiques."
           />
         </Card>
       </div>

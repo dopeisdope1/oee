@@ -30,8 +30,8 @@ export function StatChart({
     return (
       <EmptyState
         icon={BarChart3}
-        title={`No ${title.toLowerCase()} data yet`}
-        description="This chart fills in once the bot starts reporting this metric."
+        title={`Aucune donnée « ${title.toLowerCase()} » pour l'instant`}
+        description="Ce graphique se remplira dès que le bot commencera à remonter cette métrique."
       />
     );
   }

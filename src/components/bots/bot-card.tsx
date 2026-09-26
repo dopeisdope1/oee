@@ -19,15 +19,15 @@ export function BotCard({ bot }: { bot: BotSummary }) {
 
         {!bot.configured ? (
           <p className="mt-4 text-xs text-foreground-subtle">
-            Not configured yet — add its API URL and key to see live data.
+            Pas encore configuré — ajoute son URL d&apos;API et sa clé pour voir les données en direct.
           </p>
         ) : (
           <dl className="mt-4 grid grid-cols-2 gap-3">
-            <Stat label="Servers" value={bot.status.guildCount} />
-            <Stat label="Commands" value={bot.commandCount} />
-            <Stat label="Active systems" value={bot.activeSystemCount} />
+            <Stat label="Serveurs" value={bot.status.guildCount} />
+            <Stat label="Commandes" value={bot.commandCount} />
+            <Stat label="Systèmes actifs" value={bot.activeSystemCount} />
             <Stat
-              label="Uptime"
+              label="Disponibilité"
               value={
                 bot.status.uptimeSeconds != null
                   ? formatUptime(bot.status.uptimeSeconds)

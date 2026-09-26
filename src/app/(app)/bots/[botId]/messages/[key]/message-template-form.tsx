@@ -63,9 +63,9 @@ export function MessageTemplateForm({
           }
         );
         if (!res.ok) throw new Error();
-        show("Changes saved");
+        show("Modifications enregistrées");
       } catch {
-        show("Couldn't save — bot may be offline", "error");
+        show("Échec de l'enregistrement — le bot est peut-être hors ligne", "error");
       }
     });
   }
@@ -74,7 +74,7 @@ export function MessageTemplateForm({
     <div className="grid gap-6 lg:grid-cols-2">
       <div className="space-y-4">
         <div>
-          <Label htmlFor="title">Title</Label>
+          <Label htmlFor="title">Titre</Label>
           <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
         </div>
         <div>
@@ -86,7 +86,7 @@ export function MessageTemplateForm({
           />
         </div>
         <div>
-          <Label htmlFor="color">Embed color</Label>
+          <Label htmlFor="color">Couleur de l&apos;embed</Label>
           <Input
             id="color"
             type="color"
@@ -95,11 +95,11 @@ export function MessageTemplateForm({
           />
         </div>
         <div>
-          <Label htmlFor="imageUrl">Image URL</Label>
+          <Label htmlFor="imageUrl">URL de l&apos;image</Label>
           <Input id="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
         </div>
         <div>
-          <Label htmlFor="thumbnailUrl">Thumbnail URL</Label>
+          <Label htmlFor="thumbnailUrl">URL de la miniature</Label>
           <Input
             id="thumbnailUrl"
             value={thumbnailUrl}
@@ -107,22 +107,22 @@ export function MessageTemplateForm({
           />
         </div>
         <div>
-          <Label htmlFor="footer">Footer</Label>
+          <Label htmlFor="footer">Pied de page</Label>
           <Input id="footer" value={footer} onChange={(e) => setFooter(e.target.value)} />
         </div>
 
         <div>
-          <Label>Buttons</Label>
+          <Label>Boutons</Label>
           <div className="space-y-2">
             {buttons.map((btn, i) => (
               <div key={i} className="flex gap-2">
                 <Input
-                  placeholder="Label"
+                  placeholder="Libellé"
                   value={btn.label}
                   onChange={(e) => updateButton(i, { label: e.target.value })}
                 />
                 <Input
-                  placeholder="URL (optional)"
+                  placeholder="URL (optionnelle)"
                   value={btn.url ?? ""}
                   onChange={(e) => updateButton(i, { url: e.target.value })}
                 />
@@ -131,20 +131,20 @@ export function MessageTemplateForm({
                   size="sm"
                   type="button"
                   onClick={() => removeButton(i)}
-                  aria-label="Remove button"
+                  aria-label="Supprimer le bouton"
                 >
                   <Trash2 className="size-4" />
                 </Button>
               </div>
             ))}
             <Button variant="secondary" size="sm" type="button" onClick={addButton}>
-              <Plus className="size-4" /> Add button
+              <Plus className="size-4" /> Ajouter un bouton
             </Button>
           </div>
         </div>
 
         <Button onClick={save} loading={pending}>
-          Save changes
+          Enregistrer les modifications
         </Button>
       </div>
 

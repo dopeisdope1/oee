@@ -7,13 +7,13 @@ export default async function GlobalSettingsPage() {
   return (
     <div className="max-w-2xl space-y-6">
       <div>
-        <h1 className="text-lg font-semibold text-foreground">Settings</h1>
-        <p className="text-sm text-foreground-muted">Panel-wide account and security settings.</p>
+        <h1 className="text-lg font-semibold text-foreground">Paramètres</h1>
+        <p className="text-sm text-foreground-muted">Paramètres de compte et de sécurité pour tout le panneau.</p>
       </div>
 
       <Card>
-        <CardTitle>Account</CardTitle>
-        <CardDescription>Signed in via Discord OAuth2.</CardDescription>
+        <CardTitle>Compte</CardTitle>
+        <CardDescription>Connecté via Discord OAuth2.</CardDescription>
         <div className="mt-4 flex items-center gap-3">
           {session?.user?.image ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -24,35 +24,36 @@ export default async function GlobalSettingsPage() {
             </span>
           )}
           <div>
-            <p className="text-sm font-medium text-foreground">{session?.user?.name ?? "Unknown"}</p>
-            <p className="text-xs text-foreground-subtle">{session?.user?.email ?? "No email on file"}</p>
+            <p className="text-sm font-medium text-foreground">{session?.user?.name ?? "Inconnu"}</p>
+            <p className="text-xs text-foreground-subtle">{session?.user?.email ?? "Aucun e-mail enregistré"}</p>
           </div>
         </div>
       </Card>
 
       <Card>
-        <CardTitle>Security</CardTitle>
+        <CardTitle>Sécurité</CardTitle>
         <CardDescription>
-          Access to this panel is controlled by the{" "}
-          <code className="text-xs">ALLOWED_DISCORD_IDS</code> environment
-          variable, not by a setting here — so no one can grant themselves
-          access from inside the panel. Edit it on the server and restart to
-          change who can sign in.
+          L&apos;accès à ce panneau est contrôlé par la variable
+          d&apos;environnement{" "}
+          <code className="text-xs">ALLOWED_DISCORD_IDS</code>, et non par un
+          paramètre ici — personne ne peut donc s&apos;accorder l&apos;accès
+          depuis le panneau. Modifie-la sur le serveur et redémarre pour
+          changer qui peut se connecter.
         </CardDescription>
       </Card>
 
       <Card>
-        <CardTitle>Appearance</CardTitle>
+        <CardTitle>Apparence</CardTitle>
         <CardDescription>
-          Dark mode only, for now. A light theme isn&apos;t implemented yet.
+          Mode sombre uniquement pour l&apos;instant. Un thème clair n&apos;est pas encore implémenté.
         </CardDescription>
       </Card>
 
       <Card>
         <CardTitle>Notifications</CardTitle>
         <CardDescription>
-          No notification channel is configured yet — this panel doesn&apos;t send
-          emails, webhooks, or push alerts on its own.
+          Aucun canal de notification n&apos;est configuré pour l&apos;instant — ce
+          panneau n&apos;envoie ni e-mails, ni webhooks, ni notifications push de lui-même.
         </CardDescription>
       </Card>
     </div>

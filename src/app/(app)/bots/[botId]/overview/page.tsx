@@ -58,10 +58,10 @@ export default async function BotOverviewPage({
         <ErrorState code={statusResult.error ?? "unknown"} />
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <Stat icon={Clock} label="Uptime" value={formatUptime(statusResult.data.uptimeSeconds)} />
-          <Stat icon={Gauge} label="Latency" value={statusResult.data.latencyMs != null ? `${statusResult.data.latencyMs} ms` : "—"} />
-          <Stat icon={Server} label="Servers" value={statusResult.data.guildCount ?? "—"} />
-          <Stat icon={Activity} label="Active systems" value={summary?.activeSystemCount ?? "—"} />
+          <Stat icon={Clock} label="Disponibilité" value={formatUptime(statusResult.data.uptimeSeconds)} />
+          <Stat icon={Gauge} label="Latence" value={statusResult.data.latencyMs != null ? `${statusResult.data.latencyMs} ms` : "—"} />
+          <Stat icon={Server} label="Serveurs" value={statusResult.data.guildCount ?? "—"} />
+          <Stat icon={Activity} label="Systèmes actifs" value={summary?.activeSystemCount ?? "—"} />
         </div>
       )}
 
@@ -83,8 +83,8 @@ export default async function BotOverviewPage({
         <Card>
           <EmptyState
             icon={BarChart3}
-            title="No statistics for this bot yet"
-            description="This bot hasn't implemented the statistics API yet."
+            title="Pas encore de statistiques pour ce bot"
+            description="Ce bot n'a pas encore implémenté l'API de statistiques."
           />
         </Card>
       )}

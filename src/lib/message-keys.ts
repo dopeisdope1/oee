@@ -14,8 +14,8 @@ export interface MessageKeyDefinition {
 }
 
 export const MESSAGE_TEMPLATE_DEFINITIONS: MessageKeyDefinition[] = [
-  { key: "welcome", label: "Welcome message", description: "Sent when a member joins." },
-  { key: "goodbye", label: "Goodbye message", description: "Sent when a member leaves." },
-  { key: "rules", label: "Rules", description: "Posted in the rules channel." },
-  { key: "announcement", label: "Announcement template", description: "Reusable template for announcements." },
+  { key: "welcome", label: "Message de bienvenue", description: "Envoyé quand un membre rejoint." },
+  { key: "goodbye", label: "Message d'au revoir", description: "Envoyé quand un membre quitte." },
+  { key: "rules", label: "Règlement", description: "Publié dans le salon des règles." },
+  { key: "announcement", label: "Modèle d'annonce", description: "Modèle réutilisable pour les annonces." },
 ];

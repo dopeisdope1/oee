@@ -50,10 +50,10 @@ export function CommandsTable({
           }
         );
         if (!res.ok) throw new Error();
-        show("Changes saved");
+        show("Modifications enregistrées");
       } catch {
         setStates((s) => ({ ...s, [command.id]: previous }));
-        show("Couldn't save — bot may be offline", "error");
+        show("Échec de l'enregistrement — le bot est peut-être hors ligne", "error");
       }
     });
   }
@@ -66,7 +66,7 @@ export function CommandsTable({
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search commands..."
+            placeholder="Rechercher des commandes..."
             className="pl-9"
           />
         </div>
@@ -77,7 +77,7 @@ export function CommandsTable({
         >
           {categories.map((cat) => (
             <option key={cat} value={cat}>
-              {cat === "all" ? "All categories" : cat}
+              {cat === "all" ? "Toutes les catégories" : cat}
             </option>
           ))}
         </select>
@@ -87,10 +87,10 @@ export function CommandsTable({
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-foreground-subtle">
-              <th className="px-4 py-2.5 font-medium">Command</th>
-              <th className="px-4 py-2.5 font-medium">Category</th>
+              <th className="px-4 py-2.5 font-medium">Commande</th>
+              <th className="px-4 py-2.5 font-medium">Catégorie</th>
               <th className="px-4 py-2.5 font-medium">Permissions</th>
-              <th className="px-4 py-2.5 font-medium text-right">Enabled</th>
+              <th className="px-4 py-2.5 font-medium text-right">Activée</th>
             </tr>
           </thead>
           <tbody>
@@ -120,7 +120,7 @@ export function CommandsTable({
             {filtered.length === 0 && (
               <tr>
                 <td colSpan={4} className="px-4 py-8 text-center text-foreground-subtle">
-                  No commands match your search.
+                  Aucune commande ne correspond à ta recherche.
                 </td>
               </tr>
             )}

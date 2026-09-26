@@ -45,7 +45,7 @@ export function SystemConfigForm({
         config = JSON.parse(rawJson);
         setJsonError(null);
       } catch {
-        setJsonError("Invalid JSON");
+        setJsonError("JSON invalide");
         return;
       }
     }
@@ -61,9 +61,9 @@ export function SystemConfigForm({
           }
         );
         if (!res.ok) throw new Error();
-        show("Changes saved");
+        show("Modifications enregistrées");
       } catch {
-        show("Couldn't save — bot may be offline", "error");
+        show("Échec de l'enregistrement — le bot est peut-être hors ligne", "error");
       }
     });
   }
@@ -72,7 +72,7 @@ export function SystemConfigForm({
     <div className="grid gap-6 lg:grid-cols-2">
       <div className="space-y-4">
         <div className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2.5">
-          <span className="text-sm font-medium text-foreground">Enabled</span>
+          <span className="text-sm font-medium text-foreground">Activé</span>
           <Switch checked={enabled} onCheckedChange={setEnabled} />
         </div>
 
@@ -112,7 +112,7 @@ export function SystemConfigForm({
           ))
         ) : (
           <div>
-            <Label htmlFor="raw-config">Config (JSON)</Label>
+            <Label htmlFor="raw-config">Configuration (JSON)</Label>
             <Textarea
               id="raw-config"
               className="min-h-40 font-mono text-xs"
@@ -121,13 +121,13 @@ export function SystemConfigForm({
             />
             {jsonError && <p className="mt-1 text-xs text-danger">{jsonError}</p>}
             <p className="mt-1 text-xs text-foreground-subtle">
-              No dedicated form for this system yet — editing its raw config.
+              Pas encore de formulaire dédié pour ce système — édition de sa configuration brute.
             </p>
           </div>
         )}
 
         <Button onClick={save} loading={pending}>
-          Save changes
+          Enregistrer les modifications
         </Button>
       </div>
 

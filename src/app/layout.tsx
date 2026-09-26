@@ -5,12 +5,12 @@ import { ToastProvider } from "@/components/ui/toast";
 
 export const metadata: Metadata = {
   title: "Bot Panel",
-  description: "Central dashboard to manage your Discord bots.",
+  description: "Tableau de bord central pour gérer tes bots Discord.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="h-full antialiased" data-theme="dark">
+    <html lang="fr" className="h-full antialiased" data-theme="dark">
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <QueryProvider>
           <ToastProvider>{children}</ToastProvider>

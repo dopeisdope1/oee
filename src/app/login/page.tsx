@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 
 const ERROR_MESSAGES: Record<string, string> = {
   AccessDenied:
-    "That Discord account isn't allowed to access this panel. Ask whoever runs it to add your Discord user ID to ALLOWED_DISCORD_IDS.",
+    "Ce compte Discord n'est pas autorisé à accéder à ce panneau. Demande à la personne qui le gère d'ajouter ton identifiant Discord à ALLOWED_DISCORD_IDS.",
   Configuration:
-    "The panel's Discord login isn't configured yet (DISCORD_CLIENT_ID / DISCORD_CLIENT_SECRET / AUTH_SECRET).",
+    "La connexion Discord du panneau n'est pas encore configurée (DISCORD_CLIENT_ID / DISCORD_CLIENT_SECRET / AUTH_SECRET).",
 };
 
 export default async function LoginPage({
@@ -21,32 +21,32 @@ export default async function LoginPage({
   return (
     <div className="flex min-h-full flex-1 items-center justify-center px-6">
       <div className="w-full max-w-sm rounded-xl border border-border bg-surface p-6 text-center">
-        <h1 className="text-lg font-semibold text-foreground">Sign in</h1>
+        <h1 className="text-lg font-semibold text-foreground">Connexion</h1>
         <p className="mt-1 text-sm text-foreground-muted">
-          This panel is only for the Discord accounts it&apos;s been configured to allow.
+          Ce panneau est réservé aux comptes Discord qu&apos;il a été configuré pour autoriser.
         </p>
 
         {!configured ? (
           <div className="mt-6 flex flex-col items-center gap-2 rounded-lg border border-warning/30 bg-warning/5 p-4 text-left">
             <AlertTriangle className="size-5 text-warning" />
             <p className="text-sm text-foreground">
-              Discord login isn&apos;t configured yet. Set{" "}
+              La connexion Discord n&apos;est pas encore configurée. Définis{" "}
               <code className="text-xs">DISCORD_CLIENT_ID</code>,{" "}
-              <code className="text-xs">DISCORD_CLIENT_SECRET</code> and{" "}
-              <code className="text-xs">AUTH_SECRET</code> in the environment.
+              <code className="text-xs">DISCORD_CLIENT_SECRET</code> et{" "}
+              <code className="text-xs">AUTH_SECRET</code> dans l&apos;environnement.
             </p>
           </div>
         ) : (
           <form action={signInWithDiscordAction} className="mt-6">
             <Button type="submit" className="w-full">
-              Sign in with Discord
+              Se connecter avec Discord
             </Button>
           </form>
         )}
 
         {errorParam && (
           <p className="mt-4 text-sm text-danger">
-            {ERROR_MESSAGES[errorParam] ?? "Something went wrong signing you in."}
+            {ERROR_MESSAGES[errorParam] ?? "Une erreur est survenue lors de la connexion."}
           </p>
         )}
       </div>

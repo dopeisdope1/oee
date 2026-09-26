@@ -33,7 +33,7 @@ export default async function SystemConfigPage({
   return (
     <div className="max-w-3xl space-y-4">
       <h2 className="text-sm font-semibold text-foreground">
-        Configure: {result.data?.label ?? systemKey}
+        Configurer : {result.data?.label ?? systemKey}
       </h2>
 
       <Card>

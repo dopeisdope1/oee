@@ -43,10 +43,10 @@ export function SystemCard({
           }
         );
         if (!res.ok) throw new Error();
-        show("Changes saved");
+        show("Modifications enregistrées");
       } catch {
         setEnabled(previous);
-        show("Couldn't save — bot may be offline", "error");
+        show("Échec de l'enregistrement — le bot est peut-être hors ligne", "error");
       }
     });
   }
@@ -72,21 +72,21 @@ export function SystemCard({
       <div className="mt-4 flex items-center justify-between">
         {system.available ? (
           <span className="text-xs font-medium text-foreground-subtle">
-            {enabled ? "Enabled" : "Disabled"}
+            {enabled ? "Activé" : "Désactivé"}
           </span>
         ) : (
-          <Badge>Not available on this bot yet</Badge>
+          <Badge>Pas encore disponible sur ce bot</Badge>
         )}
         {system.available ? (
           <Link
             href={`/bots/${botId}/systems/${system.key}?guildId=${encodeURIComponent(guildId)}`}
             className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
           >
-            Configure
+            Configurer
           </Link>
         ) : (
           <span className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "opacity-50 pointer-events-none")}>
-            Configure
+            Configurer
           </span>
         )}
       </div>

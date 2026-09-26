@@ -19,7 +19,7 @@ export function Topbar({
       <button
         onClick={() => setMobileOpen(true)}
         className="rounded-md p-1.5 text-foreground-muted hover:bg-surface-hover hover:text-foreground lg:hidden"
-        aria-label="Open menu"
+        aria-label="Ouvrir le menu"
       >
         <Menu className="size-5" />
       </button>
@@ -35,7 +35,7 @@ export function Topbar({
           </button>
           {notifOpen && (
             <div className="absolute right-0 top-full z-20 mt-2 w-72 rounded-lg border border-border bg-surface p-3 shadow-lg">
-              <p className="text-sm text-foreground-muted">No notifications yet.</p>
+              <p className="text-sm text-foreground-muted">Aucune notification pour l&apos;instant.</p>
             </div>
           )}
         </div>
@@ -53,7 +53,7 @@ export function Topbar({
                 {(user.name ?? "?").slice(0, 1).toUpperCase()}
               </span>
             )}
-            <span className="hidden max-w-32 truncate sm:inline">{user.name ?? "Account"}</span>
+            <span className="hidden max-w-32 truncate sm:inline">{user.name ?? "Compte"}</span>
             <ChevronDown className="size-3.5 text-foreground-subtle" />
           </button>
 
@@ -65,7 +65,7 @@ export function Topbar({
                   className="flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-sm text-foreground-muted hover:bg-surface-hover hover:text-foreground"
                 >
                   <LogOut className="size-4" />
-                  Sign out
+                  Se déconnecter
                 </button>
               </form>
             </div>
