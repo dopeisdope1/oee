@@ -106,16 +106,28 @@ export interface LogFilters {
   limit?: number;
 }
 
+// Known, built-in metrics stay auto-completable, but the union stays open
+// (the `string & {}` trick) so a bot can declare its own real metrics via
+// GET /statistics/metrics without the panel's type needing to know about
+// them in advance — see StatMetricDefinition and getAvailableMetrics.
 export type StatMetric =
   | "guild_count"
   | "member_count"
   | "command_usage"
-  | "error_count";
+  | "error_count"
+  | (string & {});
 
 export interface StatPoint {
   metric: StatMetric;
   value: number;
   capturedAt: string;
+}
+
+/** One metric a bot declares it can report, with a human label for the UI. */
+export interface StatMetricDefinition {
+  metric: StatMetric;
+  title: string;
+  unit?: string;
 }
 
 export interface DateRange {

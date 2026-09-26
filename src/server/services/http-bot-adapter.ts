@@ -18,9 +18,20 @@ import type {
   LogEntry,
   LogFilters,
   MessageTemplate,
+  StatMetricDefinition,
   StatPoint,
   SystemState,
 } from "@/types";
+
+/** Shown for any bot that doesn't implement GET /statistics/metrics yet —
+ * keeps today's behavior (an honest "not available" per metric) unchanged
+ * for bots that haven't wired up real statistics. */
+const STANDARD_METRICS: StatMetricDefinition[] = [
+  { metric: "guild_count", title: "Servers" },
+  { metric: "member_count", title: "Members" },
+  { metric: "command_usage", title: "Command usage" },
+  { metric: "error_count", title: "Errors" },
+];
 
 const REQUEST_TIMEOUT_MS = 8_000;
 
@@ -259,6 +270,26 @@ export class HttpBotAdapter implements DiscordBotService {
       "statistics",
       `/statistics?${params.toString()}`
     );
+  }
+
+  /**
+   * A bot may optionally expose GET /statistics/metrics → its own real
+   * metric list. Falls back to STANDARD_METRICS (unimplemented by any bot
+   * today, so this preserves the current "not available" behavior) when the
+   * bot hasn't implemented it — same optimistic-fallback pattern as
+   * getCapabilities(), except a missing endpoint is expected here, not an
+   * edge case, since most bots simply won't have real statistics yet.
+   */
+  async getAvailableMetrics(): Promise<StatMetricDefinition[]> {
+    try {
+      return await this.request<StatMetricDefinition[]>(
+        "statistics",
+        "/statistics/metrics"
+      );
+    } catch (err) {
+      if (err instanceof BotCapabilityMissingError) return STANDARD_METRICS;
+      throw err;
+    }
   }
 
   async restartBot(): Promise<void> {

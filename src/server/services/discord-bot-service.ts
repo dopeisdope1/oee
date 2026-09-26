@@ -8,6 +8,7 @@ import type {
   LogEntry,
   LogFilters,
   MessageTemplate,
+  StatMetricDefinition,
   StatPoint,
   SystemState,
 } from "@/types";
@@ -57,6 +58,13 @@ export interface DiscordBotService {
 
   getLogs(filters: LogFilters): Promise<LogEntry[]>;
   getStatistics(metric: string, range: DateRange): Promise<StatPoint[]>;
+  /**
+   * Which metrics this bot actually reports, with a display title — lets the
+   * statistics page show a bot's own real metrics instead of a fixed list.
+   * Optional: HttpBotAdapter falls back to a standard 4-metric list when a
+   * bot doesn't implement GET /statistics/metrics yet.
+   */
+  getAvailableMetrics?(): Promise<StatMetricDefinition[]>;
 
   restartBot?(): Promise<void>;
 }
