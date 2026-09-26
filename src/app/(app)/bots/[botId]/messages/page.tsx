@@ -8,9 +8,8 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 import { buttonVariants } from "@/components/ui/button";
 import { ErrorState } from "@/components/ui/error-state";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Server } from "lucide-react";
+import { MessageSquare, Server } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { MESSAGE_TEMPLATE_DEFINITIONS } from "@/lib/message-keys";
 
 export default async function MessagesPage({
   params,
@@ -23,6 +22,33 @@ export default async function MessagesPage({
   const { guildId: requestedGuildId } = await searchParams;
   const service = await getBotService(botId);
   if (!service) notFound();
+
+  // Same approach as the Statistics page: a bot without the "messages"
+  // capability gets one honest empty state, and a bot that declares its own
+  // templates (GET /messages) shows exactly those instead of a fixed list.
+  const capabilities = await safeCall(() => service.getCapabilities());
+  if (!(capabilities.data?.includes("messages") ?? false)) {
+    return (
+      <Card>
+        <EmptyState
+          icon={MessageSquare}
+          title="Aucun message modifiable pour ce bot"
+          description="Ce bot n'envoie aucun message configurable depuis le panel."
+        />
+      </Card>
+    );
+  }
+
+  const templates = service.getAvailableMessages
+    ? await safeCall(() => service.getAvailableMessages!())
+    : { data: null, error: "unknown" as const };
+  if (!templates.data) {
+    return (
+      <Card>
+        <ErrorState code={templates.error ?? "unknown"} />
+      </Card>
+    );
+  }
 
   const liveGuilds = await safeCall(() => service.getGuilds());
   const guilds = liveGuilds.data ?? (await listCachedGuilds(botId));
@@ -42,13 +68,11 @@ export default async function MessagesPage({
       <GuildTabs botId={botId} section="messages" guilds={guilds} activeGuildId={activeGuildId} />
 
       <p className="text-sm text-foreground-subtle">
-        Modifie les modèles de message et d&apos;embed envoyés par ce bot. La
-        disponibilité est vérifiée par modèle — un bot qui n&apos;a pas encore
-        implémenté une clé donnée te le dira honnêtement quand tu l&apos;ouvriras.
+        Modifie les messages envoyés par ce bot.
       </p>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {MESSAGE_TEMPLATE_DEFINITIONS.map((def) => (
+        {templates.data.map((def) => (
           <Card key={def.key}>
             <CardHeader>
               <div>

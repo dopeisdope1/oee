@@ -1,5 +1,4 @@
 import { getBotService } from "@/server/services/registry";
-import { getBotSummary } from "@/server/queries/bot-summaries";
 import { writeStatusCache } from "@/server/repositories/bots";
 import { safeCall } from "@/server/safe-call";
 import { Card } from "@/components/ui/card";
@@ -24,9 +23,8 @@ export default async function BotOverviewPage({
   const service = await getBotService(botId);
   if (!service) notFound();
 
-  const [statusResult, summary, capabilities] = await Promise.all([
+  const [statusResult, capabilities] = await Promise.all([
     safeCall(() => service.getStatus()),
-    getBotSummary(botId),
     safeCall(() => service.getCapabilities()),
   ]);
 
@@ -36,6 +34,18 @@ export default async function BotOverviewPage({
   }
 
   const hasStatistics = capabilities.data?.includes("statistics") ?? false;
+  const hasSystems = capabilities.data?.includes("systems") ?? false;
+
+  // Counted live from the bot, across every server it's in — the panel's own
+  // SystemConfig table only knows about toggles made through the panel, so
+  // it missed anything enabled with the bot's own commands.
+  const activeSystems = hasSystems
+    ? await safeCall(async () => {
+        const guilds = await service.getGuilds();
+        const perGuild = await Promise.all(guilds.map((g) => service.getSystems(g.id)));
+        return perGuild.flat().filter((s) => s.enabled).length;
+      })
+    : null;
 
   // Mirrors the Statistics page: ask the bot which metrics it actually
   // reports (falls back to the standard, never-implemented 4 when a bot
@@ -61,7 +71,7 @@ export default async function BotOverviewPage({
           <Stat icon={Clock} label="Disponibilité" value={formatUptime(statusResult.data.uptimeSeconds)} />
           <Stat icon={Gauge} label="Latence" value={statusResult.data.latencyMs != null ? `${statusResult.data.latencyMs} ms` : "—"} />
           <Stat icon={Server} label="Serveurs" value={statusResult.data.guildCount ?? "—"} />
-          <Stat icon={Activity} label="Systèmes actifs" value={summary?.activeSystemCount ?? "—"} />
+          <Stat icon={Activity} label="Systèmes actifs" value={activeSystems?.data ?? "—"} />
         </div>
       )}
 

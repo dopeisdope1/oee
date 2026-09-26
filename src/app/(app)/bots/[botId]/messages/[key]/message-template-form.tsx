@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
 import { LivePreviewPanel } from "@/components/bots/live-preview-panel";
 import type { MessageTemplate } from "@/types";
+import type { MessageField } from "@/lib/message-keys";
 
 export function MessageTemplateForm({
   botId,
@@ -14,13 +15,19 @@ export function MessageTemplateForm({
   templateKey,
   botName,
   initialTemplate,
+  fields,
 }: {
   botId: string;
   guildId: string;
   templateKey: string;
   botName: string;
   initialTemplate: MessageTemplate;
+  /** Fields the bot really uses (null = full embed) — see MessageKeyDefinition. */
+  fields: MessageField[] | null;
 }) {
+  const has = (field: MessageField) => !fields || fields.includes(field);
+  // Only a description, no embed fields: the bot sends it as plain text.
+  const plainText = !!fields && !fields.some((f) => f !== "description");
   const [title, setTitle] = useState(initialTemplate.title ?? "");
   const [description, setDescription] = useState(initialTemplate.description ?? "");
   const [color, setColor] = useState(initialTemplate.color ?? "#6d5bff");
@@ -51,15 +58,20 @@ export function MessageTemplateForm({
           {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              title: title || null,
-              description: description || null,
-              color: color || null,
-              imageUrl: imageUrl || null,
-              thumbnailUrl: thumbnailUrl || null,
-              footer: footer || null,
-              buttons,
-            }),
+            // Only what the bot uses — never overwrite a field it doesn't own.
+            body: JSON.stringify(
+              Object.fromEntries(
+                Object.entries({
+                  title: title || null,
+                  description: description || null,
+                  color: color || null,
+                  imageUrl: imageUrl || null,
+                  thumbnailUrl: thumbnailUrl || null,
+                  footer: footer || null,
+                  buttons,
+                }).filter(([field]) => has(field as MessageField))
+              )
+            ),
           }
         );
         if (!res.ok) throw new Error();
@@ -73,18 +85,23 @@ export function MessageTemplateForm({
   return (
     <div className="grid gap-6 lg:grid-cols-2">
       <div className="space-y-4">
+        {has("title") && (
         <div>
           <Label htmlFor="title">Titre</Label>
           <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
         </div>
+        )}
+        {has("description") && (
         <div>
-          <Label htmlFor="description">Description</Label>
+          <Label htmlFor="description">{plainText ? "Texte" : "Description"}</Label>
           <Textarea
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
+        )}
+        {has("color") && (
         <div>
           <Label htmlFor="color">Couleur de l&apos;embed</Label>
           <Input
@@ -94,10 +111,14 @@ export function MessageTemplateForm({
             onChange={(e) => setColor(e.target.value)}
           />
         </div>
+        )}
+        {has("imageUrl") && (
         <div>
           <Label htmlFor="imageUrl">URL de l&apos;image</Label>
           <Input id="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
         </div>
+        )}
+        {has("thumbnailUrl") && (
         <div>
           <Label htmlFor="thumbnailUrl">URL de la miniature</Label>
           <Input
@@ -106,11 +127,15 @@ export function MessageTemplateForm({
             onChange={(e) => setThumbnailUrl(e.target.value)}
           />
         </div>
+        )}
+        {has("footer") && (
         <div>
           <Label htmlFor="footer">Pied de page</Label>
           <Input id="footer" value={footer} onChange={(e) => setFooter(e.target.value)} />
         </div>
+        )}
 
+        {has("buttons") && (
         <div>
           <Label>Boutons</Label>
           <div className="space-y-2">
@@ -142,6 +167,7 @@ export function MessageTemplateForm({
             </Button>
           </div>
         </div>
+        )}
 
         <Button onClick={save} loading={pending}>
           Enregistrer les modifications
@@ -151,13 +177,17 @@ export function MessageTemplateForm({
       <LivePreviewPanel
         data={{
           botName,
-          title: title || null,
-          description: description || null,
-          color: color || null,
-          imageUrl: imageUrl || null,
-          thumbnailUrl: thumbnailUrl || null,
-          footer: footer || null,
-          buttons,
+          ...(plainText
+            ? { content: description }
+            : {
+                title: has("title") ? title || null : null,
+                description: description || null,
+                color: has("color") ? color || null : null,
+                imageUrl: has("imageUrl") ? imageUrl || null : null,
+                thumbnailUrl: has("thumbnailUrl") ? thumbnailUrl || null : null,
+                footer: has("footer") ? footer || null : null,
+                buttons: has("buttons") ? buttons : [],
+              }),
         }}
       />
     </div>

@@ -22,6 +22,10 @@ import type {
   StatPoint,
   SystemState,
 } from "@/types";
+import {
+  MESSAGE_TEMPLATE_DEFINITIONS,
+  type MessageKeyDefinition,
+} from "@/lib/message-keys";
 
 /** Shown for any bot that doesn't implement GET /statistics/metrics yet —
  * keeps today's behavior (an honest "not available" per metric) unchanged
@@ -221,6 +225,18 @@ export class HttpBotAdapter implements DiscordBotService {
       { method: "PATCH", body: JSON.stringify(patch) }
     );
     return { ...saved, config: saved.config ?? {}, available: true };
+  }
+
+  /** GET /messages → the bot's own template list; falls back to the
+   * built-in catalog when the endpoint is missing, same pattern as
+   * getAvailableMetrics(). */
+  async getAvailableMessages(): Promise<MessageKeyDefinition[]> {
+    try {
+      return await this.request<MessageKeyDefinition[]>("messages", "/messages");
+    } catch (err) {
+      if (err instanceof BotCapabilityMissingError) return MESSAGE_TEMPLATE_DEFINITIONS;
+      throw err;
+    }
   }
 
   async getMessageTemplate(

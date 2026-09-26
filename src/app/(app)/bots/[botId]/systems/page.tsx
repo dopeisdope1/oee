@@ -2,13 +2,11 @@ import { notFound } from "next/navigation";
 import { getBotService } from "@/server/services/registry";
 import { safeCall } from "@/server/safe-call";
 import { listGuilds as listCachedGuilds } from "@/server/repositories/guilds";
-import { listSystemDefinitions } from "@/server/repositories/systems";
 import { GuildTabs } from "@/components/bots/guild-tabs";
 import { SystemCard } from "@/components/bots/system-card";
 import { ErrorState } from "@/components/ui/error-state";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Server } from "lucide-react";
-import type { SystemState } from "@/types";
+import { Server, ToggleLeft } from "lucide-react";
 
 export default async function SystemsPage({
   params,
@@ -35,40 +33,27 @@ export default async function SystemsPage({
 
   const activeGuildId = requestedGuildId ?? guilds[0].id;
 
+  // A bot without the Systems API simply has nothing to toggle — say so,
+  // rather than showing a catalog of systems it doesn't have.
   const systemsResult = await safeCall(() => service.getSystems(activeGuildId));
-  let systems: SystemState[] = [];
-  let fallbackNotice = false;
-
-  if (systemsResult.data) {
-    systems = systemsResult.data;
-  } else if (systemsResult.error === "not_capable") {
-    const defs = await listSystemDefinitions(botId);
-    systems = defs.map((def) => ({
-      ...def,
-      enabled: false,
-      config: {},
-      updatedAt: null,
-      available: false,
-    }));
-    fallbackNotice = true;
-  }
+  const systems = systemsResult.data ?? [];
 
   return (
     <div className="space-y-4">
       <GuildTabs botId={botId} section="systems" guilds={guilds} activeGuildId={activeGuildId} />
 
-      {systemsResult.error && !fallbackNotice ? (
+      {systemsResult.error === "not_capable" ? (
+        <EmptyState
+          icon={ToggleLeft}
+          title="Aucun système activable pour ce bot"
+          description="Ce bot n'a aucune fonction à activer ou désactiver par serveur."
+        />
+      ) : systemsResult.error ? (
         <ErrorState code={systemsResult.error} />
       ) : systems.length === 0 ? (
         <EmptyState title="Aucun système configuré pour ce bot pour l'instant" />
       ) : (
         <>
-          {fallbackNotice && (
-            <p className="text-sm text-foreground-subtle">
-              Ce bot n&apos;a pas encore implémenté l&apos;API Systèmes — affichage
-              du catalogue de départ, tous désactivés, pour que tu voies ce qui est prévu.
-            </p>
-          )}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {systems.map((system) => (
               <SystemCard

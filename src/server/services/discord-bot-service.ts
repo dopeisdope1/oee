@@ -12,6 +12,7 @@ import type {
   StatPoint,
   SystemState,
 } from "@/types";
+import type { MessageKeyDefinition } from "@/lib/message-keys";
 
 /**
  * The one interface every bot integration implements. No UI component and no
@@ -49,6 +50,12 @@ export interface DiscordBotService {
     patch: { enabled?: boolean; config?: Record<string, unknown> }
   ): Promise<SystemState>;
 
+  /**
+   * Which message templates this bot actually has, and which fields each one
+   * uses. Optional: HttpBotAdapter falls back to the panel's built-in
+   * catalog when a bot doesn't implement GET /messages.
+   */
+  getAvailableMessages?(): Promise<MessageKeyDefinition[]>;
   getMessageTemplate(key: string, guildId?: string): Promise<MessageTemplate>;
   updateMessageTemplate(
     key: string,
