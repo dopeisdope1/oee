@@ -6,16 +6,19 @@ export async function listCommands(
   botId: string,
   guildId?: string
 ): Promise<Command[]> {
+  // `include` always has the same shape (never a conditional object vs.
+  // undefined) so Prisma can infer a single, non-union result type — a
+  // conditional include here made `c.overrides` collapse to `unknown`.
+  // Filtering on a guildId that can never match ("") when none was passed
+  // is equivalent to not including overrides at all.
   const commands = await prisma.command.findMany({
     where: { botId },
     orderBy: { name: "asc" },
-    include: guildId
-      ? { overrides: { where: { guildId } } }
-      : undefined,
+    include: { overrides: { where: { guildId: guildId ?? "" } } },
   });
 
   return commands.map((c) => {
-    const override = "overrides" in c ? c.overrides[0] : undefined;
+    const override = c.overrides[0];
     return {
       id: c.id,
       name: c.name,
