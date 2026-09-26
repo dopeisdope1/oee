@@ -7,21 +7,26 @@
  * colors are semantic pastilles, never full-bleed backgrounds.
  */
 :root {
-  --background: #0b0c10;
-  --surface: #131620;
-  --surface-hover: #191d2b;
-  --border: #232838;
-  --foreground: #e8e9ee;
-  --foreground-muted: #9297ab;
-  --foreground-subtle: #656a7d;
+  --background: #0a0912;
+  --surface: #14121f;
+  --surface-hover: #1b1830;
+  --border: #262238;
+  --foreground: #eeeaf9;
+  --foreground-muted: #9b93b5;
+  --foreground-subtle: #6b6486;
 
-  --accent: #6d5bff;
-  --accent-hover: #7d6dff;
+  /* Violet, tuned close to a purple/pink SaaS brand — accent-2 is the pink
+     end of the headline gradient (see .text-gradient below), never used
+     for functional UI (buttons, active nav) on its own. */
+  --accent: #8b5cf6;
+  --accent-hover: #9d72f8;
+  --accent-2: #f472b6;
   --accent-foreground: #ffffff;
 
   --success: #3ecf8e;
   --warning: #f2b84b;
   --danger: #f2555a;
+  --info: #5b9dff;
 
   /* System font stack — swap for next/font/google Inter once this is
      running somewhere with normal internet access (this dev sandbox's
@@ -39,10 +44,12 @@
   --color-foreground-subtle: var(--foreground-subtle);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-accent-2: var(--accent-2);
   --color-accent-foreground: var(--accent-foreground);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
+  --color-info: var(--info);
   --font-sans: var(--font-sans);
 }
 
@@ -51,11 +58,35 @@
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(1100px 480px at 12% -10%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 60%),
+    radial-gradient(900px 420px at 100% 0%, color-mix(in srgb, var(--accent-2) 12%, transparent), transparent 55%),
+    var(--background);
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans);
 }
 
 ::selection {
   background: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* Headline gradient — violet to pink, same pairing as the accent tokens.
+   Used sparingly: page/section titles, never body text or data values. */
+.text-gradient {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* A small filled circle for a card/row icon — violet-tinted, never a solid
+   fill (keeps icons legible against every status color used alongside). */
+.icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
 }

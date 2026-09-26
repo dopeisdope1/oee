@@ -6,7 +6,7 @@ import { LayoutDashboard, Settings as SettingsIcon, PanelLeftClose, PanelLeftOpe
 import { cn } from "@/lib/utils";
 import { useSidebar } from "./sidebar-context";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { BOT_NAV_ITEMS } from "@/lib/bot-nav";
+import { BOT_NAV_ITEMS, BOT_NAV_GROUP_DOTS } from "@/lib/bot-nav";
 import type { BotSummary } from "@/types";
 
 export function Sidebar({ bots }: { bots: BotSummary[] }) {
@@ -21,7 +21,12 @@ export function Sidebar({ bots }: { bots: BotSummary[] }) {
     <div className="flex h-full flex-col">
       <div className="flex h-14 shrink-0 items-center justify-between border-b border-border px-4">
         {!collapsed && (
-          <span className="text-sm font-semibold tracking-tight">Bot Panel</span>
+          <span className="flex items-center gap-2 text-sm font-semibold tracking-tight">
+            <span className="icon-circle size-6">
+              <BotIcon className="size-3.5" />
+            </span>
+            <span className="text-gradient">Bot Panel</span>
+          </span>
         )}
         <button
           onClick={toggleCollapsed}
@@ -54,11 +59,14 @@ export function Sidebar({ bots }: { bots: BotSummary[] }) {
               className={cn(
                 "flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-colors",
                 bot.id === activeBotId
-                  ? "bg-surface-hover text-foreground"
+                  ? "bg-accent/15 text-foreground"
                   : "text-foreground-muted hover:bg-surface-hover hover:text-foreground"
               )}
             >
-              <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-background text-[10px] font-semibold">
+              <span
+                className="flex size-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-white"
+                style={{ background: "linear-gradient(135deg, var(--accent), var(--accent-2))" }}
+              >
                 {bot.name.slice(0, 2).toUpperCase()}
               </span>
               {!collapsed && (
@@ -71,33 +79,45 @@ export function Sidebar({ bots }: { bots: BotSummary[] }) {
           ))}
         </div>
 
-        {activeBot && (
-          <>
-            <p className={cn("mt-4 mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-foreground-subtle", collapsed && "sr-only")}>
-              Managing
-            </p>
-            <div className="space-y-0.5">
-              {BOT_NAV_ITEMS.map((item) => {
-                const href = `/bots/${activeBot.id}/${item.segment}`;
-                return (
-                  <NavLink
-                    key={item.segment}
-                    href={href}
-                    icon={item.icon}
-                    active={pathname.startsWith(href)}
-                    collapsed={collapsed}
-                  >
-                    {item.label}
-                  </NavLink>
-                );
-              })}
+        {activeBot &&
+          Object.entries(
+            BOT_NAV_ITEMS.reduce<Record<string, typeof BOT_NAV_ITEMS>>((acc, item) => {
+              (acc[item.group] ??= []).push(item);
+              return acc;
+            }, {})
+          ).map(([group, items]) => (
+            <div key={group} className="mt-4">
+              <p
+                className={cn(
+                  "mb-1 flex items-center gap-1.5 px-2 text-[11px] font-semibold uppercase tracking-wider text-foreground-subtle",
+                  collapsed && "sr-only"
+                )}
+              >
+                <span className={cn("size-1.5 rounded-full", BOT_NAV_GROUP_DOTS[group])} />
+                {group}
+              </p>
+              <div className="space-y-0.5">
+                {items.map((item) => {
+                  const href = `/bots/${activeBot.id}/${item.segment}`;
+                  return (
+                    <NavLink
+                      key={item.segment}
+                      href={href}
+                      icon={item.icon}
+                      active={pathname.startsWith(href)}
+                      collapsed={collapsed}
+                    >
+                      {item.label}
+                    </NavLink>
+                  );
+                })}
+              </div>
             </div>
-          </>
-        )}
+          ))}
 
         <div className="mt-4 border-t border-border pt-3">
           <NavLink href="/settings" icon={SettingsIcon} active={pathname === "/settings"} collapsed={collapsed}>
-            Settings
+            Panel settings
           </NavLink>
         </div>
       </nav>

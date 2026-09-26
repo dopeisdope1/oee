@@ -1,44 +1,57 @@
-import { Badge } from "@/components/ui/badge";
+import { Badge, type BadgeTone } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { LogEntry } from "@/types";
 
-const LEVEL_STYLES: Record<LogEntry["level"], string> = {
-  info: "text-foreground-muted",
-  warn: "text-warning",
-  error: "text-danger",
+const LEVEL_DOT: Record<LogEntry["level"], string> = {
+  info: "bg-info",
+  warn: "bg-warning",
+  error: "bg-danger",
 };
 
+const LEVEL_TONE: Record<LogEntry["level"], BadgeTone> = {
+  info: "info",
+  warn: "warning",
+  error: "danger",
+};
+
+function relativeTime(iso: string): string {
+  const seconds = Math.round((Date.now() - new Date(iso).getTime()) / 1000);
+  if (seconds < 5) return "à l'instant";
+  if (seconds < 60) return `il y a ${seconds}s`;
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `il y a ${minutes}min`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `il y a ${hours}h`;
+  const days = Math.round(hours / 24);
+  return `il y a ${days}j`;
+}
+
+/** A live-feed style list — mirrors an activity log, not a spreadsheet: one
+ * colored status dot and a right-aligned type badge + relative time per
+ * row, so a long list of real moderation/config events scans at a glance. */
 export function LogTable({ entries }: { entries: LogEntry[] }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-border">
-      <table className="w-full min-w-[640px] text-sm">
-        <thead>
-          <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-foreground-subtle">
-            <th className="px-4 py-2.5 font-medium">Time</th>
-            <th className="px-4 py-2.5 font-medium">Type</th>
-            <th className="px-4 py-2.5 font-medium">Message</th>
-            <th className="px-4 py-2.5 font-medium">Server</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((entry) => (
-            <tr key={entry.id} className="border-b border-border last:border-0">
-              <td className="whitespace-nowrap px-4 py-2.5 text-foreground-subtle">
-                {new Date(entry.createdAt).toLocaleString()}
-              </td>
-              <td className="px-4 py-2.5">
-                <Badge className={cn(LEVEL_STYLES[entry.level])}>{entry.type}</Badge>
-              </td>
-              <td className={cn("px-4 py-2.5", LEVEL_STYLES[entry.level])}>
-                {entry.message}
-              </td>
-              <td className="px-4 py-2.5 text-foreground-subtle">
-                {entry.guildId ?? "—"}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface">
+      {entries.map((entry) => (
+        <div
+          key={entry.id}
+          className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-surface-hover"
+        >
+          <span className={cn("mt-1.5 size-2 shrink-0 rounded-full", LEVEL_DOT[entry.level])} />
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm text-foreground">{entry.message}</p>
+            {entry.guildId && (
+              <p className="mt-0.5 truncate text-xs text-foreground-subtle">
+                Serveur {entry.guildId}
+              </p>
+            )}
+          </div>
+          <div className="flex shrink-0 flex-col items-end gap-1">
+            <Badge tone={LEVEL_TONE[entry.level]}>{entry.type}</Badge>
+            <span className="text-xs text-foreground-subtle">{relativeTime(entry.createdAt)}</span>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
