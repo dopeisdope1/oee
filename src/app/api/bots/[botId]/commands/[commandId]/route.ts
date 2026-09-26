@@ -2,7 +2,6 @@ import { z } from "zod";
 import { NextResponse } from "next/server";
 import { getBotService } from "@/server/services/registry";
 import { upsertGuild } from "@/server/repositories/guilds";
-import { setCommandOverride } from "@/server/repositories/commands";
 import { recordAudit } from "@/server/repositories/audit";
 import { requireUserId, parseBody, withBotErrors } from "@/server/api-helpers";
 
@@ -31,10 +30,17 @@ export async function PATCH(
       if (guild) await upsertGuild(botId, guild);
     }
 
+    // The bot's own PATCH /commands/:name call above is the real, live
+    // source of truth (it flips the enable flag the bot's dispatch code
+    // actually checks). There used to be a second write here mirroring the
+    // change into a CommandGuildOverride row for the panel's own DB cache —
+    // removed: nothing in the app ever reads that table (the Commands page
+    // always fetches live from the bot), and its Command.id foreign key
+    // never matched a real bot's command ids (bots expose their command
+    // *name* as the id, never seeded into the Command table), so every
+    // per-guild toggle failed here with a foreign key violation — even
+    // though the actual bot-side change above had already succeeded.
     await service.setCommandEnabled(commandId, body.data.enabled, guildId);
-    if (guildId) {
-      await setCommandOverride(commandId, guildId, body.data.enabled);
-    }
     await recordAudit({
       userId: auth.userId,
       botId,
