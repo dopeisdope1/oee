@@ -1,18 +1,23 @@
 // Discord Bots Panel — data model
 //
+// Prisma 7 moved connection URLs out of schema.prisma and into
+// prisma.config.ts (see that file at the project root), and now requires a
+// driver adapter at runtime instead of reading `url` here — see
+// src/lib/prisma.ts and prisma/seed.ts.
+//
 // Local dev uses SQLite for zero-friction setup (`npm run db:push`).
-// For production, switch the datasource to PostgreSQL:
-//   provider = "postgresql"
-//   url      = env("DATABASE_URL")   // e.g. postgresql://user:pass@host:5432/panel
+// For production, switch to PostgreSQL: change `provider` below to
+// "postgresql", update DATABASE_URL in .env, and swap the driver adapter in
+// src/lib/prisma.ts (@prisma/adapter-better-sqlite3 -> @prisma/adapter-pg).
 // The schema itself (models/fields) does not need to change.
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
 }
 
 // ─────────────────────────────────────────────────────────────────────────

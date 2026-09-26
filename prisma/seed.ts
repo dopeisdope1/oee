@@ -7,9 +7,16 @@
 // Guilds, commands and status are always fetched live through
 // DiscordBotService; nothing here is presented to the UI as bot data.
 
-import { PrismaClient } from "@prisma/client";
+// Prisma 7: driver adapter required, no more `url` in schema.prisma —
+// see src/lib/prisma.ts for the same pattern used by the app itself.
+import "dotenv/config";
+import { PrismaClient } from "../generated/prisma/client";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
-const prisma = new PrismaClient();
+const adapter = new PrismaBetterSqlite3({
+  url: process.env.DATABASE_URL || "file:./prisma/dev.db",
+});
+const prisma = new PrismaClient({ adapter });
 
 interface BotSeed {
   id: string;
