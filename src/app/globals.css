@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — dark mode SaaS panel. Two background layers (page vs
+ * card) instead of borders/shadows to create depth; a single accent color
+ * used sparingly (primary actions, active nav item, active switch); status
+ * colors are semantic pastilles, never full-bleed backgrounds.
+ */
+:root {
+  --background: #0b0c10;
+  --surface: #131620;
+  --surface-hover: #191d2b;
+  --border: #232838;
+  --foreground: #e8e9ee;
+  --foreground-muted: #9297ab;
+  --foreground-subtle: #656a7d;
+
+  --accent: #6d5bff;
+  --accent-hover: #7d6dff;
+  --accent-foreground: #ffffff;
+
+  --success: #3ecf8e;
+  --warning: #f2b84b;
+  --danger: #f2555a;
+
+  /* System font stack — swap for next/font/google Inter once this is
+     running somewhere with normal internet access (this dev sandbox's
+     network policy blocks the Google Fonts CDN). */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-subtle: var(--foreground-subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-sans);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+}

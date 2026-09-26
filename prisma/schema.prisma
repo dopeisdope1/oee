@@ -1,0 +1,291 @@
+// Discord Bots Panel — data model
+//
+// Local dev uses SQLite for zero-friction setup (`npm run db:push`).
+// For production, switch the datasource to PostgreSQL:
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")   // e.g. postgresql://user:pass@host:5432/panel
+// The schema itself (models/fields) does not need to change.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Auth (NextAuth / Auth.js — Discord OAuth2 login to the panel itself)
+// ─────────────────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?
+  emailVerified DateTime?
+  image         String?
+  role          String    @default("owner") // "owner" | "admin" — room for a small team later
+  createdAt     DateTime  @default(now())
+
+  accounts      Account[]
+  sessions      Session[]
+  auditLogs     AuditLog[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Bots — the 4 existing Discord bots this panel manages
+// ─────────────────────────────────────────────────────────────────────────
+
+model Bot {
+  id         String   @id // slug, e.g. "bot-1" — used in URLs, never a database autoincrement
+  name       String
+  avatarUrl  String?
+  apiBaseUrl String // base URL of this bot's HTTP API on the VPS
+  apiKeyRef  String // name of the env var holding the shared secret — never the secret itself
+  createdAt  DateTime @default(now())
+
+  guilds             Guild[]
+  systemDefinitions  SystemDefinition[]
+  commands           Command[]
+  messageTemplates   MessageTemplate[]
+  logEntries         LogEntry[]
+  statSnapshots      StatSnapshot[]
+  statusCache        BotStatusCache?
+  auditLogs          AuditLog[]
+}
+
+// Last known status, refreshed by polling and/or the events webhook. Cache only — never the
+// source of truth, and never presented as "Online" unless a check actually succeeded recently.
+model BotStatusCache {
+  botId         String   @id
+  state         String // "online" | "connecting" | "offline" | "unknown"
+  latencyMs     Int?
+  uptimeSeconds Int?
+  guildCount    Int?
+  lastCheckedAt DateTime @updatedAt
+
+  bot Bot @relation(fields: [botId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Guilds (Discord servers) — light mirror; source of truth is Discord/the bot
+// ─────────────────────────────────────────────────────────────────────────
+
+model Guild {
+  id            String   @id // Discord guild id
+  botId         String
+  name          String
+  iconUrl       String?
+  memberCount   Int?
+  ownerDiscordId String?
+  addedAt       DateTime?
+  updatedAt     DateTime @updatedAt
+
+  bot                    Bot                    @relation(fields: [botId], references: [id], onDelete: Cascade)
+  config                 GuildConfig?
+  systemConfigs          SystemConfig[]
+  commandOverrides       CommandGuildOverride[]
+  logEntries             LogEntry[]
+  statSnapshots          StatSnapshot[]
+  auditLogs              AuditLog[]
+
+  @@index([botId])
+}
+
+// Configuration specific to one (bot, guild) pair — never shared across guilds.
+model GuildConfig {
+  id            String   @id @default(cuid())
+  botId         String
+  guildId       String   @unique
+  prefix        String?
+  updatedAt     DateTime @updatedAt
+  updatedById   String?
+
+  guild Guild @relation(fields: [guildId], references: [id], onDelete: Cascade)
+
+  @@index([botId])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Systems — the toggleable feature catalog (Welcome, Auto-Mod, Tickets…)
+// ─────────────────────────────────────────────────────────────────────────
+
+model SystemDefinition {
+  key         String
+  botId       String
+  label       String
+  description String
+  icon        String
+  category    String?
+
+  bot Bot @relation(fields: [botId], references: [id], onDelete: Cascade)
+
+  @@id([botId, key])
+}
+
+model SystemConfig {
+  id          String   @id @default(cuid())
+  botId       String
+  guildId     String
+  systemKey   String
+  enabled     Boolean  @default(false)
+  config      String   @default("{}") // JSON, shape depends on systemKey
+  updatedAt   DateTime @updatedAt
+  updatedById String?
+
+  guild Guild @relation(fields: [guildId], references: [id], onDelete: Cascade)
+
+  @@unique([guildId, systemKey])
+  @@index([botId])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Commands
+// ─────────────────────────────────────────────────────────────────────────
+
+model Command {
+  id               String   @id @default(cuid())
+  botId            String
+  name             String
+  category         String?
+  description      String?
+  permissions      String? // human-readable summary, e.g. "Manage Server"
+  enabledGlobally  Boolean  @default(true)
+
+  bot       Bot                    @relation(fields: [botId], references: [id], onDelete: Cascade)
+  overrides CommandGuildOverride[]
+
+  @@unique([botId, name])
+}
+
+model CommandGuildOverride {
+  commandId String
+  guildId   String
+  enabled   Boolean
+
+  command Command @relation(fields: [commandId], references: [id], onDelete: Cascade)
+  guild   Guild   @relation(fields: [guildId], references: [id], onDelete: Cascade)
+
+  @@id([commandId, guildId])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Messages / embeds
+// ─────────────────────────────────────────────────────────────────────────
+
+model MessageTemplate {
+  id           String   @id @default(cuid())
+  botId        String
+  // "" = bot-wide default template, otherwise a guild id. Not a relation to
+  // Guild: a compound-unique index with a nullable column doesn't reliably
+  // enforce uniqueness across databases, so the repository layer
+  // (server/repositories/messages.ts) uses "" as a non-null sentinel and
+  // translates it to/from `guildId: string | null` at the boundary.
+  guildId      String   @default("")
+  key          String // e.g. "welcome", "goodbye"
+  title        String?
+  description  String?
+  color        String?
+  imageUrl     String?
+  thumbnailUrl String?
+  footer       String?
+  buttons      String   @default("[]") // JSON array of {label, url|customId}
+  updatedAt    DateTime @updatedAt
+
+  bot Bot @relation(fields: [botId], references: [id], onDelete: Cascade)
+
+  @@unique([botId, guildId, key])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Logs & statistics
+// ─────────────────────────────────────────────────────────────────────────
+
+model LogEntry {
+  id        String   @id @default(cuid())
+  botId     String
+  guildId   String?
+  level     String // "info" | "warn" | "error"
+  type      String // "command" | "error" | "event" | "config_change" | "startup" | "shutdown"
+  message   String
+  metadata  String   @default("{}") // JSON
+  createdAt DateTime @default(now())
+
+  bot   Bot    @relation(fields: [botId], references: [id], onDelete: Cascade)
+  guild Guild? @relation(fields: [guildId], references: [id], onDelete: Cascade)
+
+  @@index([botId, createdAt])
+  @@index([guildId])
+}
+
+model StatSnapshot {
+  id         String   @id @default(cuid())
+  botId      String
+  guildId    String?
+  metric     String // "guild_count" | "member_count" | "command_usage" | "error_count" | ...
+  value      Float
+  capturedAt DateTime @default(now())
+
+  bot   Bot    @relation(fields: [botId], references: [id], onDelete: Cascade)
+  guild Guild? @relation(fields: [guildId], references: [id], onDelete: Cascade)
+
+  @@index([botId, metric, capturedAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Audit trail — every configuration change made through the panel
+// ─────────────────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  botId     String
+  guildId   String?
+  action    String // e.g. "system_config.update", "guild_config.update"
+  before    String? // JSON
+  after     String? // JSON
+  createdAt DateTime @default(now())
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bot   Bot    @relation(fields: [botId], references: [id], onDelete: Cascade)
+  guild Guild? @relation(fields: [guildId], references: [id], onDelete: Cascade)
+
+  @@index([botId, createdAt])
+}
