@@ -65,11 +65,12 @@ export default async function MessagesPage({
 
   return (
     <div className="space-y-4">
-      <GuildTabs botId={botId} section="messages" guilds={guilds} activeGuildId={activeGuildId} />
+      <div>
+        <h2 className="text-base font-semibold text-foreground">Messages</h2>
+        <p className="mt-0.5 text-sm text-foreground-muted">Modifie les messages envoyés automatiquement par ce bot.</p>
+      </div>
 
-      <p className="text-sm text-foreground-subtle">
-        Modifie les messages envoyés par ce bot.
-      </p>
+      <GuildTabs botId={botId} section="messages" guilds={guilds} activeGuildId={activeGuildId} />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {templates.data.map((def) => (

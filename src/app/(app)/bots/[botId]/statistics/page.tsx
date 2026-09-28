@@ -35,28 +35,34 @@ export default async function StatisticsPage({
   const capabilities = await safeCall(() => service.getCapabilities());
   const hasStatistics = capabilities.data?.includes("statistics") ?? false;
 
-  const rangePicker = (
-    <div className="flex justify-end gap-2">
-      {[7, 30, 90].map((d) => (
-        <a
-          key={d}
-          href={`/bots/${botId}/statistics?range=${d}`}
-          className={`rounded-full px-3 py-1.5 text-sm font-medium ${
-            days === d
-              ? "bg-accent/15 text-accent"
-              : "text-foreground-muted hover:bg-surface-hover hover:text-foreground"
-          }`}
-        >
-          {d}d
-        </a>
-      ))}
+  const header = (
+    <div className="flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <h2 className="text-base font-semibold text-foreground">Statistiques</h2>
+        <p className="mt-0.5 text-sm text-foreground-muted">Tendances réelles rapportées par ce bot.</p>
+      </div>
+      <div className="flex gap-1 rounded-lg border border-border p-0.5">
+        {[7, 30, 90].map((d) => (
+          <a
+            key={d}
+            href={`/bots/${botId}/statistics?range=${d}`}
+            className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+              days === d
+                ? "bg-accent/15 text-accent"
+                : "text-foreground-muted hover:bg-surface-hover hover:text-foreground"
+            }`}
+          >
+            {d}j
+          </a>
+        ))}
+      </div>
     </div>
   );
 
   if (!hasStatistics) {
     return (
       <div className="space-y-4">
-        {rangePicker}
+        {header}
         <Card>
           <EmptyState
             icon={BarChart3}
@@ -79,7 +85,7 @@ export default async function StatisticsPage({
   if (!metrics.data) {
     return (
       <div className="space-y-4">
-        {rangePicker}
+        {header}
         <Card>
           <ErrorState code={metrics.error ?? "unknown"} />
         </Card>
@@ -93,7 +99,7 @@ export default async function StatisticsPage({
 
   return (
     <div className="space-y-4">
-      {rangePicker}
+      {header}
 
       <div className="grid gap-4 sm:grid-cols-2">
         {metrics.data.map((m, i) => {

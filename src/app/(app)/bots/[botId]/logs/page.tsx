@@ -4,6 +4,9 @@ import { safeCall } from "@/server/safe-call";
 import { LogTable } from "@/components/bots/log-table";
 import { ErrorState } from "@/components/ui/error-state";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Card } from "@/components/ui/card";
+import { Input, Label } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { ScrollText } from "lucide-react";
 import type { LogFilters, LogLevel, LogType } from "@/types";
 
@@ -41,74 +44,66 @@ export default async function LogsPage({
 
   return (
     <div className="space-y-4">
-      <form className="flex flex-wrap items-end gap-2" method="get">
-        <div>
-          <label className="mb-1.5 block text-xs font-medium text-foreground-muted">
-            Recherche
-          </label>
-          <input
-            type="text"
-            name="search"
-            defaultValue={sp.search ?? ""}
-            placeholder="Rechercher des messages..."
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
-          />
-        </div>
-        <div>
-          <label className="mb-1.5 block text-xs font-medium text-foreground-muted">Type</label>
-          <select
-            name="type"
-            defaultValue={sp.type ?? ""}
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
-          >
-            <option value="">Tous</option>
-            {TYPES.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="mb-1.5 block text-xs font-medium text-foreground-muted">Niveau</label>
-          <select
-            name="level"
-            defaultValue={sp.level ?? ""}
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
-          >
-            <option value="">Tous</option>
-            {LEVELS.map((l) => (
-              <option key={l} value={l}>
-                {l}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="mb-1.5 block text-xs font-medium text-foreground-muted">Du</label>
-          <input
-            type="date"
-            name="from"
-            defaultValue={sp.from ?? ""}
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
-          />
-        </div>
-        <div>
-          <label className="mb-1.5 block text-xs font-medium text-foreground-muted">Au</label>
-          <input
-            type="date"
-            name="to"
-            defaultValue={sp.to ?? ""}
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground"
-          />
-        </div>
-        <button
-          type="submit"
-          className="h-9 rounded-lg border border-border bg-surface px-4 text-sm font-medium text-foreground hover:bg-surface-hover"
-        >
-          Filtrer
-        </button>
-      </form>
+      <div>
+        <h2 className="text-base font-semibold text-foreground">Journaux</h2>
+        <p className="mt-0.5 text-sm text-foreground-muted">
+          Événements récents remontés par ce bot — commandes, erreurs, changements de config.
+        </p>
+      </div>
+
+      <Card>
+        <form className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:items-end" method="get">
+          <div className="sm:col-span-2 lg:col-span-1">
+            <Label htmlFor="search">Recherche</Label>
+            <Input id="search" type="text" name="search" defaultValue={sp.search ?? ""} placeholder="Message..." />
+          </div>
+          <div>
+            <Label htmlFor="type">Type</Label>
+            <select
+              id="type"
+              name="type"
+              defaultValue={sp.type ?? ""}
+              className="h-9 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+            >
+              <option value="">Tous</option>
+              {TYPES.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <Label htmlFor="level">Niveau</Label>
+            <select
+              id="level"
+              name="level"
+              defaultValue={sp.level ?? ""}
+              className="h-9 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+            >
+              <option value="">Tous</option>
+              {LEVELS.map((l) => (
+                <option key={l} value={l}>
+                  {l}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <Label htmlFor="from">Du</Label>
+            <Input id="from" type="date" name="from" defaultValue={sp.from ?? ""} />
+          </div>
+          <div className="flex items-end gap-2">
+            <div className="flex-1">
+              <Label htmlFor="to">Au</Label>
+              <Input id="to" type="date" name="to" defaultValue={sp.to ?? ""} />
+            </div>
+            <Button type="submit" variant="secondary">
+              Filtrer
+            </Button>
+          </div>
+        </form>
+      </Card>
 
       {!result.data ? (
         <ErrorState code={result.error ?? "unknown"} />

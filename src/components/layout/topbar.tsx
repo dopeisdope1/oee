@@ -38,6 +38,13 @@ export function Topbar({
           Rechercher
           <kbd className="rounded border border-border px-1 text-[10px]">Ctrl K</kbd>
         </button>
+        <button
+          onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true }))}
+          className="rounded-md p-2 text-foreground-muted hover:bg-surface-hover hover:text-foreground sm:hidden"
+          aria-label="Rechercher"
+        >
+          <Search className="size-4.5" />
+        </button>
 
         <div className="relative">
           <button
@@ -51,7 +58,7 @@ export function Topbar({
             )}
           </button>
           {notifOpen && (
-            <div className="absolute right-0 top-full z-20 mt-2 w-80 rounded-lg border border-border bg-surface p-2 shadow-lg">
+            <div className="absolute right-0 top-full z-20 mt-2 w-[min(20rem,calc(100vw-2rem))] rounded-lg border border-border bg-surface p-2 shadow-lg">
               {notifications.length === 0 ? (
                 <p className="p-2 text-sm text-foreground-muted">Aucune notification pour l&apos;instant.</p>
               ) : (

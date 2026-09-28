@@ -40,6 +40,11 @@ export default async function SystemsPage({
 
   return (
     <div className="space-y-4">
+      <div>
+        <h2 className="text-base font-semibold text-foreground">Systèmes</h2>
+        <p className="mt-0.5 text-sm text-foreground-muted">Active ou désactive chaque fonction de ce bot, serveur par serveur.</p>
+      </div>
+
       <GuildTabs botId={botId} section="systems" guilds={guilds} activeGuildId={activeGuildId} />
 
       {systemsResult.error === "not_capable" ? (

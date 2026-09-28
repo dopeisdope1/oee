@@ -33,11 +33,24 @@ export default async function CommandsPage({
 
   const activeGuildId = requestedGuildId ?? guilds[0].id;
 
-  const commandsResult = await safeCall(() => service.getCommands(activeGuildId));
+  const capabilities = await safeCall(() => service.getCapabilities());
+  const hasRules = capabilities.data?.includes("commandRules") ?? false;
+
+  const [commandsResult, rulesResult] = await Promise.all([
+    safeCall(() => service.getCommands(activeGuildId)),
+    hasRules ? safeCall(() => service.getAllCommandRules(activeGuildId)) : Promise.resolve({ data: null, error: undefined }),
+  ]);
   const commands = commandsResult.data;
 
   return (
     <div className="space-y-4">
+      <div>
+        <h2 className="text-base font-semibold text-foreground">Commandes</h2>
+        <p className="mt-0.5 text-sm text-foreground-muted">
+          Active, restreint ou configure chaque commande, serveur par serveur.
+        </p>
+      </div>
+
       <GuildTabs botId={botId} section="commands" guilds={guilds} activeGuildId={activeGuildId} />
 
       {!commands ? (
@@ -49,6 +62,7 @@ export default async function CommandsPage({
           botId={botId}
           guildId={activeGuildId}
           commands={commands}
+          rules={rulesResult.data ?? undefined}
         />
       )}
     </div>

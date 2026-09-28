@@ -55,8 +55,12 @@ export async function DashboardSectionView({
 
   return (
     <div className="space-y-6">
+      <div>
+        <h2 className="text-base font-semibold text-foreground">{section.label}</h2>
+        <p className="mt-0.5 text-sm text-foreground-muted">{section.description}</p>
+      </div>
+
       <GuildTabs botId={botId} section={sectionKey} guilds={guilds} activeGuildId={activeGuildId} />
-      <p className="text-sm text-foreground-muted">{section.description}</p>
 
       {nothingAtAll ? (
         <EmptyState

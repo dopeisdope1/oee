@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toast";
 import type { CommandRule, CommandRuleAction, GuildChannel, GuildRole } from "@/types";
 
@@ -276,7 +277,7 @@ export function CommandRulesPanel({
   return (
     <div className="space-y-6">
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="space-y-5 rounded-xl border border-border bg-surface p-4">
+        <Card className="space-y-5">
           <h3 className="text-sm font-semibold text-success">Autorisations</h3>
           <div>
             <Label>Rôles autorisés</Label>
@@ -299,9 +300,9 @@ export function CommandRulesPanel({
             <Label>Salons autorisés</Label>
             <ChannelPicker field="allowedChannels" tone="success" ids={rule.allowedChannels} channels={channels} pending={pending} onToggle={toggle} />
           </div>
-        </div>
+        </Card>
 
-        <div className="space-y-5 rounded-xl border border-border bg-surface p-4">
+        <Card className="space-y-5">
           <h3 className="text-sm font-semibold text-danger">Interdictions</h3>
           <div>
             <Label>Rôles interdits</Label>
@@ -324,10 +325,10 @@ export function CommandRulesPanel({
             <Label>Salons interdits</Label>
             <ChannelPicker field="deniedChannels" tone="danger" ids={rule.deniedChannels} channels={channels} pending={pending} onToggle={toggle} />
           </div>
-        </div>
+        </Card>
       </div>
 
-      <div className="rounded-xl border border-border bg-surface p-4">
+      <Card>
         <h3 className="mb-3 text-sm font-semibold text-foreground">Cooldown</h3>
         <p className="mb-3 text-xs text-foreground-subtle">
           Délai minimum, en secondes, entre deux usages de cette commande par un même membre. Laisse vide pour aucun cooldown.
@@ -361,7 +362,7 @@ export function CommandRulesPanel({
             </Button>
           )}
         </div>
-      </div>
+      </Card>
 
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-border p-4">
         <div>

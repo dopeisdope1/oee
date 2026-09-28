@@ -64,6 +64,11 @@ export default async function BotOverviewPage({
 
   return (
     <div className="space-y-6">
+      <div>
+        <h2 className="text-base font-semibold text-foreground">Tableau de bord</h2>
+        <p className="mt-0.5 text-sm text-foreground-muted">État en direct et activité de ce bot.</p>
+      </div>
+
       {!statusResult.data ? (
         <ErrorState code={statusResult.error ?? "unknown"} />
       ) : (

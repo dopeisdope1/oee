@@ -24,7 +24,10 @@ export default async function ServersPage({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-sm font-semibold text-foreground">Serveurs</h2>
+      <div>
+        <h2 className="text-base font-semibold text-foreground">Serveurs</h2>
+        <p className="mt-0.5 text-sm text-foreground-muted">Tous les serveurs Discord où ce bot est présent.</p>
+      </div>
 
       {!result.data ? (
         <ErrorState code={result.error ?? "unknown"} />
