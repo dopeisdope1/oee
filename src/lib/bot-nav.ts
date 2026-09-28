@@ -8,6 +8,10 @@ import {
   ScrollText,
   BarChart3,
   Settings as SettingsIcon,
+  Gavel,
+  ShieldCheck,
+  Ticket,
+  Mic,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -29,6 +33,10 @@ export const BOT_NAV_ITEMS: BotNavItem[] = [
   { label: "Rôles", segment: "roles", icon: Users, group: "Gestion" },
   { label: "Systèmes", segment: "systems", icon: ToggleLeft, group: "Gestion" },
   { label: "Messages", segment: "messages", icon: MessageSquare, group: "Gestion" },
+  { label: "Modération", segment: "moderation", icon: Gavel, group: "Modules" },
+  { label: "Sécurité", segment: "security", icon: ShieldCheck, group: "Modules" },
+  { label: "Tickets", segment: "tickets", icon: Ticket, group: "Modules" },
+  { label: "Vocal", segment: "voice", icon: Mic, group: "Modules" },
   { label: "Journaux", segment: "logs", icon: ScrollText, group: "Suivi" },
   { label: "Statistiques", segment: "statistics", icon: BarChart3, group: "Suivi" },
   { label: "Paramètres", segment: "settings", icon: SettingsIcon, group: "Configuration" },
@@ -37,6 +45,7 @@ export const BOT_NAV_ITEMS: BotNavItem[] = [
 export const BOT_NAV_GROUP_DOTS: Record<string, string> = {
   "Vue d'ensemble": "bg-accent",
   Gestion: "bg-info",
+  Modules: "bg-warning",
   Suivi: "bg-accent-2",
   Configuration: "bg-foreground-subtle",
 };
