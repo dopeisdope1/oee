@@ -30,14 +30,26 @@ export async function DashboardSectionView({
   const service = await getBotService(botId);
   if (!service) return <ErrorState code="unknown" />;
 
+  const header = (
+    <div>
+      <h2 className="text-base font-semibold text-foreground">{section.label}</h2>
+      <p className="mt-0.5 text-sm text-foreground-muted">{section.description}</p>
+    </div>
+  );
+
   const liveGuilds = await safeCall(() => service.getGuilds());
   const guilds = liveGuilds.data ?? (await listCachedGuilds(botId));
 
   if (guilds.length === 0) {
-    return liveGuilds.error ? (
-      <ErrorState code={liveGuilds.error} />
-    ) : (
-      <EmptyState icon={Server} title="Ce bot n'est encore sur aucun serveur" />
+    return (
+      <div className="space-y-6">
+        {header}
+        {liveGuilds.error ? (
+          <ErrorState code={liveGuilds.error} />
+        ) : (
+          <EmptyState icon={Server} title="Ce bot n'est encore sur aucun serveur" />
+        )}
+      </div>
     );
   }
 
@@ -55,10 +67,7 @@ export async function DashboardSectionView({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-base font-semibold text-foreground">{section.label}</h2>
-        <p className="mt-0.5 text-sm text-foreground-muted">{section.description}</p>
-      </div>
+      {header}
 
       <GuildTabs botId={botId} section={sectionKey} guilds={guilds} activeGuildId={activeGuildId} />
 

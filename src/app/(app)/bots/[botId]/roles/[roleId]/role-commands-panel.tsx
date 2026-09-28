@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { Check, X, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toast";
 import type { Command, CommandRule, CommandRuleAction } from "@/types";
 
@@ -106,8 +107,9 @@ export function RoleCommandsPanel({
     <div className="space-y-3">
       <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Rechercher une commande..." />
 
-      <div className="overflow-x-auto rounded-xl border border-border">
-        <table className="w-full min-w-80 text-sm">
+      {/* Desktop: table */}
+      <div className="hidden overflow-x-auto rounded-xl border border-border sm:block">
+        <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-foreground-subtle">
               <th className="px-4 py-2.5 font-medium">Commande</th>
@@ -118,40 +120,10 @@ export function RoleCommandsPanel({
             {filtered.map((command) => {
               const status = statusFor(command.id);
               return (
-                <tr key={command.id} className="border-b border-border last:border-0">
+                <tr key={command.id} className="border-b border-border last:border-0 hover:bg-surface-hover/60">
                   <td className="px-4 py-2.5 font-medium text-foreground">/{command.name}</td>
                   <td className="px-4 py-2.5">
-                    <div className="flex items-center justify-end gap-1">
-                      <Button
-                        size="sm"
-                        variant={status === "allowed" ? "primary" : "secondary"}
-                        onClick={() => setStatus(command.id, "allowed")}
-                        disabled={pendingId}
-                        aria-label={`Autoriser /${command.name}`}
-                        className={status === "allowed" ? "bg-success text-white hover:bg-success/90" : ""}
-                      >
-                        <Check className="size-3.5" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => setStatus(command.id, "neutral")}
-                        disabled={pendingId}
-                        aria-label={`Neutre pour /${command.name}`}
-                        className={status === "neutral" ? "bg-foreground-subtle/20" : ""}
-                      >
-                        <Minus className="size-3.5" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant={status === "denied" ? "danger" : "secondary"}
-                        onClick={() => setStatus(command.id, "denied")}
-                        disabled={pendingId}
-                        aria-label={`Interdire /${command.name}`}
-                      >
-                        <X className="size-3.5" />
-                      </Button>
-                    </div>
+                    <AccessButtons status={status} pending={pendingId} name={command.name} onChange={(s) => setStatus(command.id, s)} />
                   </td>
                 </tr>
               );
@@ -166,6 +138,70 @@ export function RoleCommandsPanel({
           </tbody>
         </table>
       </div>
+
+      {/* Mobile: card list */}
+      <div className="space-y-2 sm:hidden">
+        {filtered.length === 0 && (
+          <Card className="py-8 text-center text-sm text-foreground-subtle">
+            Aucune commande ne correspond à ta recherche.
+          </Card>
+        )}
+        {filtered.map((command) => {
+          const status = statusFor(command.id);
+          return (
+            <Card key={command.id} className="flex items-center justify-between gap-3 p-4">
+              <p className="font-medium text-foreground">/{command.name}</p>
+              <AccessButtons status={status} pending={pendingId} name={command.name} onChange={(s) => setStatus(command.id, s)} />
+            </Card>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function AccessButtons({
+  status,
+  pending,
+  name,
+  onChange,
+}: {
+  status: Status;
+  pending: boolean;
+  name: string;
+  onChange: (status: Status) => void;
+}) {
+  return (
+    <div className="flex items-center justify-end gap-1">
+      <Button
+        size="sm"
+        variant={status === "allowed" ? "primary" : "secondary"}
+        onClick={() => onChange("allowed")}
+        disabled={pending}
+        aria-label={`Autoriser /${name}`}
+        className={status === "allowed" ? "bg-success text-white hover:bg-success/90" : ""}
+      >
+        <Check className="size-3.5" />
+      </Button>
+      <Button
+        size="sm"
+        variant="secondary"
+        onClick={() => onChange("neutral")}
+        disabled={pending}
+        aria-label={`Neutre pour /${name}`}
+        className={status === "neutral" ? "bg-foreground-subtle/20" : ""}
+      >
+        <Minus className="size-3.5" />
+      </Button>
+      <Button
+        size="sm"
+        variant={status === "denied" ? "danger" : "secondary"}
+        onClick={() => onChange("denied")}
+        disabled={pending}
+        aria-label={`Interdire /${name}`}
+      >
+        <X className="size-3.5" />
+      </Button>
     </div>
   );
 }

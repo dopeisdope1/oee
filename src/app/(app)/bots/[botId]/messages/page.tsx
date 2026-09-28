@@ -27,15 +27,25 @@ export default async function MessagesPage({
   // capability gets one honest empty state, and a bot that declares its own
   // templates (GET /messages) shows exactly those instead of a fixed list.
   const capabilities = await safeCall(() => service.getCapabilities());
+  const header = (
+    <div>
+      <h2 className="text-base font-semibold text-foreground">Messages</h2>
+      <p className="mt-0.5 text-sm text-foreground-muted">Modifie les messages envoyés automatiquement par ce bot.</p>
+    </div>
+  );
+
   if (!(capabilities.data?.includes("messages") ?? false)) {
     return (
-      <Card>
-        <EmptyState
-          icon={MessageSquare}
-          title="Aucun message modifiable pour ce bot"
-          description="Ce bot n'envoie aucun message configurable depuis le panel."
-        />
-      </Card>
+      <div className="space-y-4">
+        {header}
+        <Card>
+          <EmptyState
+            icon={MessageSquare}
+            title="Aucun message modifiable pour ce bot"
+            description="Ce bot n'envoie aucun message configurable depuis le panel."
+          />
+        </Card>
+      </div>
     );
   }
 
@@ -44,9 +54,12 @@ export default async function MessagesPage({
     : { data: null, error: "unknown" as const };
   if (!templates.data) {
     return (
-      <Card>
-        <ErrorState code={templates.error ?? "unknown"} />
-      </Card>
+      <div className="space-y-4">
+        {header}
+        <Card>
+          <ErrorState code={templates.error ?? "unknown"} />
+        </Card>
+      </div>
     );
   }
 
@@ -54,10 +67,15 @@ export default async function MessagesPage({
   const guilds = liveGuilds.data ?? (await listCachedGuilds(botId));
 
   if (guilds.length === 0) {
-    return liveGuilds.error ? (
-      <ErrorState code={liveGuilds.error} />
-    ) : (
-      <EmptyState icon={Server} title="Ce bot n'est encore sur aucun serveur" />
+    return (
+      <div className="space-y-4">
+        {header}
+        {liveGuilds.error ? (
+          <ErrorState code={liveGuilds.error} />
+        ) : (
+          <EmptyState icon={Server} title="Ce bot n'est encore sur aucun serveur" />
+        )}
+      </div>
     );
   }
 
@@ -65,10 +83,7 @@ export default async function MessagesPage({
 
   return (
     <div className="space-y-4">
-      <div>
-        <h2 className="text-base font-semibold text-foreground">Messages</h2>
-        <p className="mt-0.5 text-sm text-foreground-muted">Modifie les messages envoyés automatiquement par ce bot.</p>
-      </div>
+      {header}
 
       <GuildTabs botId={botId} section="messages" guilds={guilds} activeGuildId={activeGuildId} />
 
