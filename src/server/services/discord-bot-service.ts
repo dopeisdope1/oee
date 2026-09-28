@@ -2,9 +2,13 @@ import type {
   BotStatus,
   Capability,
   Command,
+  CommandRule,
+  CommandRuleAction,
   DateRange,
   Guild,
+  GuildChannel,
   GuildConfig,
+  GuildRole,
   LogEntry,
   LogFilters,
   MessageTemplate,
@@ -42,6 +46,19 @@ export interface DiscordBotService {
     enabled: boolean,
     guildId?: string
   ): Promise<void>;
+
+  /** "Permissions & règles" — proxy to the bot's own utils/commandRules.js, never a second store. */
+  getCommandRule(commandId: string, guildId: string): Promise<CommandRule>;
+  updateCommandRule(
+    commandId: string,
+    guildId: string,
+    action: CommandRuleAction
+  ): Promise<CommandRule>;
+  /** Every command's rule in one call — powers the Roles page without N requests. */
+  getAllCommandRules(guildId: string): Promise<Record<string, CommandRule>>;
+
+  getGuildRoles(guildId: string): Promise<GuildRole[]>;
+  getGuildChannels(guildId: string): Promise<GuildChannel[]>;
 
   getSystems(guildId: string): Promise<SystemState[]>;
   updateSystemConfig(

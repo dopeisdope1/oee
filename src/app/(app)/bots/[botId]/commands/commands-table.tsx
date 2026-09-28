@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { Search } from "lucide-react";
+import Link from "next/link";
+import { Search, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
@@ -91,6 +92,7 @@ export function CommandsTable({
               <th className="px-4 py-2.5 font-medium">Catégorie</th>
               <th className="px-4 py-2.5 font-medium">Permissions</th>
               <th className="px-4 py-2.5 font-medium text-right">Activée</th>
+              <th className="px-4 py-2.5 font-medium text-right">Règles</th>
             </tr>
           </thead>
           <tbody>
@@ -115,11 +117,20 @@ export function CommandsTable({
                     aria-label={`Toggle /${command.name}`}
                   />
                 </td>
+                <td className="px-4 py-2.5 text-right">
+                  <Link
+                    href={`/bots/${botId}/commands/${command.id}?guildId=${encodeURIComponent(guildId)}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground-muted hover:text-foreground"
+                  >
+                    <SlidersHorizontal className="size-3.5" />
+                    Configurer
+                  </Link>
+                </td>
               </tr>
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-foreground-subtle">
+                <td colSpan={5} className="px-4 py-8 text-center text-foreground-subtle">
                   Aucune commande ne correspond à ta recherche.
                 </td>
               </tr>

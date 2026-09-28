@@ -12,9 +12,13 @@ import type {
   BotStatus,
   Capability,
   Command,
+  CommandRule,
+  CommandRuleAction,
   DateRange,
   Guild,
+  GuildChannel,
   GuildConfig,
+  GuildRole,
   LogEntry,
   LogFilters,
   MessageTemplate,
@@ -48,6 +52,9 @@ const ALL_CAPABILITIES: Capability[] = [
   "guilds",
   "guildConfig",
   "commands",
+  "commandRules",
+  "roles",
+  "channels",
   "systems",
   "messages",
   "logs",
@@ -197,6 +204,40 @@ export class HttpBotAdapter implements DiscordBotService {
       `/commands/${encodeURIComponent(commandId)}`,
       { method: "PATCH", body: JSON.stringify({ enabled, guildId }) }
     );
+  }
+
+  async getCommandRule(commandId: string, guildId: string): Promise<CommandRule> {
+    return this.request<CommandRule>(
+      "commandRules",
+      `/commands/${encodeURIComponent(commandId)}/rules?guildId=${encodeURIComponent(guildId)}`
+    );
+  }
+
+  async updateCommandRule(
+    commandId: string,
+    guildId: string,
+    action: CommandRuleAction
+  ): Promise<CommandRule> {
+    return this.request<CommandRule>(
+      "commandRules",
+      `/commands/${encodeURIComponent(commandId)}/rules?guildId=${encodeURIComponent(guildId)}`,
+      { method: "PATCH", body: JSON.stringify(action) }
+    );
+  }
+
+  async getAllCommandRules(guildId: string): Promise<Record<string, CommandRule>> {
+    return this.request<Record<string, CommandRule>>(
+      "commandRules",
+      `/commands/rules?guildId=${encodeURIComponent(guildId)}`
+    );
+  }
+
+  async getGuildRoles(guildId: string): Promise<GuildRole[]> {
+    return this.request<GuildRole[]>("roles", `/guilds/${encodeURIComponent(guildId)}/roles`);
+  }
+
+  async getGuildChannels(guildId: string): Promise<GuildChannel[]> {
+    return this.request<GuildChannel[]>("channels", `/guilds/${encodeURIComponent(guildId)}/channels`);
   }
 
   async getSystems(guildId: string): Promise<SystemState[]> {
