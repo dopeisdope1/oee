@@ -19,7 +19,7 @@ export interface LivePreviewData {
  * Discord logo, no Discord-specific colors or typography).
  */
 export function LivePreviewPanel({ data }: { data: LivePreviewData }) {
-  const accent = data.color || "#6d5bff";
+  const accent = data.color || "#8b5cf6";
 
   return (
     <div className="rounded-xl border border-border bg-background p-4">

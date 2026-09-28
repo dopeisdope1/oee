@@ -30,7 +30,7 @@ export function MessageTemplateForm({
   const plainText = !!fields && !fields.some((f) => f !== "description");
   const [title, setTitle] = useState(initialTemplate.title ?? "");
   const [description, setDescription] = useState(initialTemplate.description ?? "");
-  const [color, setColor] = useState(initialTemplate.color ?? "#6d5bff");
+  const [color, setColor] = useState(initialTemplate.color ?? "#8b5cf6");
   const [imageUrl, setImageUrl] = useState(initialTemplate.imageUrl ?? "");
   const [thumbnailUrl, setThumbnailUrl] = useState(initialTemplate.thumbnailUrl ?? "");
   const [footer, setFooter] = useState(initialTemplate.footer ?? "");

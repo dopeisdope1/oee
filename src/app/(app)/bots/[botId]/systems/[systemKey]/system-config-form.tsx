@@ -106,7 +106,7 @@ export function SystemConfigForm({
                     <Input
                       id={field.key}
                       type={field.type === "color" ? "color" : "text"}
-                      value={(values[field.key] as string) ?? (field.type === "color" ? "#6d5bff" : "")}
+                      value={(values[field.key] as string) ?? (field.type === "color" ? "#8b5cf6" : "")}
                       placeholder={field.placeholder}
                       onChange={(e) => setField(field.key, e.target.value)}
                     />
