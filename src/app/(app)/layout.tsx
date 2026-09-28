@@ -15,7 +15,8 @@ export default async function AppLayout({
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const [bots, notifications] = await Promise.all([listBotSummaries(), listNotifications()]);
+  const bots = await listBotSummaries();
+  const notifications = await listNotifications(bots);
 
   return (
     <SidebarProvider>

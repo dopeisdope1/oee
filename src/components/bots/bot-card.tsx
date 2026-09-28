@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { BotAvatar } from "@/components/bots/bot-avatar";
 import type { BotSummary } from "@/types";
 
 export function BotCard({ bot }: { bot: BotSummary }) {
@@ -8,9 +9,7 @@ export function BotCard({ bot }: { bot: BotSummary }) {
     <Link href={`/bots/${bot.id}/overview`}>
       <Card className="transition-colors hover:bg-surface-hover">
         <div className="flex items-center gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-background text-sm font-semibold">
-            {bot.name.slice(0, 2).toUpperCase()}
-          </span>
+          <BotAvatar name={bot.name} avatarUrl={bot.avatarUrl} size={10} />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-foreground">{bot.name}</p>
             <StatusBadge state={bot.status.state} />

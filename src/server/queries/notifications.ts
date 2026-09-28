@@ -1,6 +1,6 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
-import { listBotSummaries } from "./bot-summaries";
+import type { BotSummary } from "@/types";
 
 export interface NotificationItem {
   id: string;
@@ -16,10 +16,13 @@ export interface NotificationItem {
  * sidebar/dashboard) and its own recent error-level log entries (pushed via
  * the events webhook, see README's "bot API contract"). Never a synthetic
  * "everything's fine" or a fabricated count.
+ *
+ * Takes `bots` from the caller instead of fetching its own copy: the app
+ * layout already loads listBotSummaries() for the sidebar on every
+ * navigation — a second identical query here would just double that cost
+ * for no reason.
  */
-export async function listNotifications(): Promise<NotificationItem[]> {
-  const bots = await listBotSummaries();
-
+export async function listNotifications(bots: BotSummary[]): Promise<NotificationItem[]> {
   const offline: NotificationItem[] = bots
     .filter((b) => b.configured && (b.status.state === "offline" || b.status.state === "unknown"))
     .map((b) => ({

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getBotSummary } from "@/server/queries/bot-summaries";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { BotAvatar } from "@/components/bots/bot-avatar";
 
 export default async function BotLayout({
   children,
@@ -16,9 +17,7 @@ export default async function BotLayout({
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-surface text-sm font-semibold">
-          {bot.name.slice(0, 2).toUpperCase()}
-        </span>
+        <BotAvatar name={bot.name} avatarUrl={bot.avatarUrl} size={9} />
         <div>
           <h1 className="text-base font-semibold text-foreground">{bot.name}</h1>
           <StatusBadge state={bot.status.state} />

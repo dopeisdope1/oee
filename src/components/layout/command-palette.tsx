@@ -100,6 +100,9 @@ export function CommandPalette({ bots }: { bots: BotSummary[] }) {
       onClick={() => setOpen(false)}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Recherche rapide"
         className="w-full max-w-lg overflow-hidden rounded-xl border border-border bg-surface shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
@@ -111,12 +114,16 @@ export function CommandPalette({ bots }: { bots: BotSummary[] }) {
             onChange={(e) => onQueryChange(e.target.value)}
             onKeyDown={onInputKeyDown}
             placeholder="Rechercher une page, un bot, une fonctionnalité..."
+            aria-label="Rechercher"
+            role="combobox"
+            aria-expanded="true"
+            aria-controls="command-palette-results"
             className="w-full bg-transparent text-sm text-foreground placeholder:text-foreground-subtle focus:outline-none"
           />
           <kbd className="shrink-0 rounded border border-border px-1.5 py-0.5 text-[10px] text-foreground-subtle">Esc</kbd>
         </div>
 
-        <div className="max-h-80 overflow-y-auto p-1.5">
+        <div id="command-palette-results" role="listbox" className="max-h-80 overflow-y-auto p-1.5">
           {filtered.length === 0 ? (
             <p className="p-4 text-center text-sm text-foreground-muted">Aucun résultat.</p>
           ) : (
@@ -125,6 +132,8 @@ export function CommandPalette({ bots }: { bots: BotSummary[] }) {
               return (
                 <button
                   key={item.id}
+                  role="option"
+                  aria-selected={index === activeIndex}
                   onClick={() => go(item)}
                   onMouseEnter={() => setActiveIndex(index)}
                   className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm ${

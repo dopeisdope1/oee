@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useToast } from "@/components/ui/toast";
 import type { CommandRule, CommandRuleAction, GuildChannel, GuildRole } from "@/types";
 
@@ -186,6 +187,7 @@ export function CommandRulesPanel({
   channels: GuildChannel[];
 }) {
   const [rule, setRule] = useState(initialRule);
+  const [confirmResetOpen, setConfirmResetOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const [cooldownInput, setCooldownInput] = useState(String(initialRule.cooldownSeconds ?? ""));
   const [userInput, setUserInput] = useState<Record<ToggleField, string>>({
@@ -250,7 +252,7 @@ export function CommandRulesPanel({
   }
 
   function resetAll() {
-    if (!window.confirm("Réinitialiser toute la configuration de cette commande pour ce serveur ?")) return;
+    setConfirmResetOpen(false);
     send(
       { action: "reset" },
       {
@@ -368,7 +370,7 @@ export function CommandRulesPanel({
             Efface toutes les règles de cette commande pour ce serveur (rôles, utilisateurs, salons, cooldown).
           </p>
         </div>
-        <Button variant="danger" onClick={resetAll} disabled={pending}>
+        <Button variant="danger" onClick={() => setConfirmResetOpen(true)} disabled={pending}>
           Tout réinitialiser
         </Button>
       </div>
@@ -378,6 +380,17 @@ export function CommandRulesPanel({
           Dernière modification : {new Date(rule.updatedAt).toLocaleString("fr-FR")}
         </p>
       )}
+
+      <ConfirmDialog
+        open={confirmResetOpen}
+        title="Réinitialiser cette commande ?"
+        description="Efface les rôles, utilisateurs, salons autorisés/interdits et le cooldown pour ce serveur. Cette action ne peut pas être annulée."
+        confirmLabel="Réinitialiser"
+        danger
+        pending={pending}
+        onConfirm={resetAll}
+        onCancel={() => setConfirmResetOpen(false)}
+      />
     </div>
   );
 }

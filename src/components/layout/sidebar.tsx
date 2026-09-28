@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useSidebar } from "./sidebar-context";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { BOT_NAV_ITEMS, BOT_NAV_GROUP_DOTS } from "@/lib/bot-nav";
+import { BotAvatar } from "@/components/bots/bot-avatar";
 import type { BotSummary } from "@/types";
 
 export function Sidebar({ bots }: { bots: BotSummary[] }) {
@@ -66,12 +67,7 @@ export function Sidebar({ bots }: { bots: BotSummary[] }) {
                   : "text-foreground-muted hover:bg-surface-hover hover:text-foreground"
               )}
             >
-              <span
-                className="flex size-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-white"
-                style={{ background: "linear-gradient(135deg, var(--accent), var(--accent-2))" }}
-              >
-                {bot.name.slice(0, 2).toUpperCase()}
-              </span>
+              <BotAvatar name={bot.name} avatarUrl={bot.avatarUrl} size={6} />
               {!collapsed && (
                 <span className="flex flex-1 items-center justify-between gap-2 truncate">
                   <span className="truncate">{bot.name}</span>
