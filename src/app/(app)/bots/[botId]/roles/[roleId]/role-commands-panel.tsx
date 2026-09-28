@@ -106,8 +106,8 @@ export function RoleCommandsPanel({
     <div className="space-y-3">
       <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Rechercher une commande..." />
 
-      <div className="overflow-hidden rounded-xl border border-border">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="w-full min-w-80 text-sm">
           <thead>
             <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-foreground-subtle">
               <th className="px-4 py-2.5 font-medium">Commande</th>

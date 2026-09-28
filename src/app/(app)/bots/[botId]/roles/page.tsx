@@ -55,8 +55,8 @@ export default async function RolesPage({
       ) : rolesResult.data.length === 0 ? (
         <EmptyState icon={Users} title="Aucun rôle sur ce serveur" />
       ) : (
-        <div className="overflow-hidden rounded-xl border border-border">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full min-w-100 text-sm">
             <thead>
               <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-foreground-subtle">
                 <th className="px-4 py-2.5 font-medium">Rôle</th>

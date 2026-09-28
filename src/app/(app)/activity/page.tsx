@@ -17,7 +17,7 @@ export default async function ActivityPage({
 
   return (
     <div className="max-w-4xl space-y-4">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-lg font-semibold text-foreground">Historique des modifications</h1>
           <p className="text-sm text-foreground-muted">

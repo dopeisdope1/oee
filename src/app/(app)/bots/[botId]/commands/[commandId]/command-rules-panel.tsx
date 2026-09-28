@@ -330,7 +330,7 @@ export function CommandRulesPanel({
         <p className="mb-3 text-xs text-foreground-subtle">
           Délai minimum, en secondes, entre deux usages de cette commande par un même membre. Laisse vide pour aucun cooldown.
         </p>
-        <div className="flex items-end gap-2">
+        <div className="flex flex-wrap items-end gap-2">
           <div className="flex-1 max-w-40">
             <Label htmlFor="cooldown">Durée (secondes)</Label>
             <Input
@@ -361,7 +361,7 @@ export function CommandRulesPanel({
         </div>
       </div>
 
-      <div className="flex items-center justify-between rounded-xl border border-dashed border-border p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-border p-4">
         <div>
           <p className="text-sm font-medium text-foreground">Réinitialiser</p>
           <p className="text-xs text-foreground-subtle">

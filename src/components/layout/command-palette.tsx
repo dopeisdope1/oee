@@ -95,7 +95,10 @@ export function CommandPalette({ bots }: { bots: BotSummary[] }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 pt-24" onClick={() => setOpen(false)}>
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 px-4 pt-24"
+      onClick={() => setOpen(false)}
+    >
       <div
         className="w-full max-w-lg overflow-hidden rounded-xl border border-border bg-surface shadow-2xl"
         onClick={(e) => e.stopPropagation()}
