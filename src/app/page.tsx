@@ -8,6 +8,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export default async function LandingPage() {
@@ -26,8 +27,13 @@ export default async function LandingPage() {
       </header>
 
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center px-6 py-16 text-center">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          Gère tous tes bots Discord depuis un seul endroit.
+        <span className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-foreground-muted">
+          4 bots, un seul panneau
+        </span>
+        <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+          <span className="text-foreground">Gère tous tes bots Discord</span>
+          <br />
+          <span className="text-gradient">depuis un seul endroit.</span>
         </h1>
         <p className="mt-4 max-w-xl text-foreground-muted">
           Un panneau de contrôle unique pour les bots Discord que tu fais déjà
@@ -80,10 +86,12 @@ function Feature({
   description: string;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-surface p-4">
-      <Icon className="size-5 text-accent" />
+    <Card>
+      <span className="icon-circle size-9">
+        <Icon className="size-4.5" />
+      </span>
       <p className="mt-3 text-sm font-semibold text-foreground">{title}</p>
       <p className="mt-1 text-sm text-foreground-muted">{description}</p>
-    </div>
+    </Card>
   );
 }

@@ -1,4 +1,4 @@
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Bot as BotIcon } from "lucide-react";
 import { signInWithDiscordAction } from "@/server/actions/auth";
 import { Button } from "@/components/ui/button";
 
@@ -20,8 +20,11 @@ export default async function LoginPage({
 
   return (
     <div className="flex min-h-full flex-1 items-center justify-center px-6">
-      <div className="w-full max-w-sm rounded-xl border border-border bg-surface p-6 text-center">
-        <h1 className="text-lg font-semibold text-foreground">Connexion</h1>
+      <div className="w-full max-w-sm rounded-xl border border-border bg-surface p-6 text-center shadow-[0_1px_0_0_rgba(255,255,255,0.03)_inset,0_8px_24px_-16px_rgba(0,0,0,0.6)]">
+        <span className="icon-circle mx-auto size-10">
+          <BotIcon className="size-5" />
+        </span>
+        <h1 className="mt-3 text-lg font-semibold text-foreground">Connexion</h1>
         <p className="mt-1 text-sm text-foreground-muted">
           Ce panneau est réservé aux comptes Discord qu&apos;il a été configuré pour autoriser.
         </p>
