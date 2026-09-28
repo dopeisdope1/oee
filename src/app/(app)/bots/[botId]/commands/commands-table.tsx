@@ -4,6 +4,7 @@ import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { Search, SlidersHorizontal, Users, Hash, Clock, ShieldCheck } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -82,17 +83,18 @@ export function CommandsTable({
             className="pl-9"
           />
         </div>
-        <select
+        <Select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+          className="w-auto min-w-40"
+          aria-label="Filtrer par catégorie"
         >
           {categories.map((cat) => (
             <option key={cat} value={cat}>
               {cat === "all" ? "Toutes les catégories" : cat}
             </option>
           ))}
-        </select>
+        </Select>
         <div className="flex rounded-lg border border-border p-0.5 text-xs font-medium">
           {(["all", "enabled", "disabled"] as StatusFilter[]).map((s) => (
             <button

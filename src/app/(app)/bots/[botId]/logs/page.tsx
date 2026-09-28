@@ -6,6 +6,7 @@ import { ErrorState } from "@/components/ui/error-state";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Card } from "@/components/ui/card";
 import { Input, Label } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { ScrollText } from "lucide-react";
 import type { LogFilters, LogLevel, LogType } from "@/types";
@@ -59,35 +60,25 @@ export default async function LogsPage({
           </div>
           <div>
             <Label htmlFor="type">Type</Label>
-            <select
-              id="type"
-              name="type"
-              defaultValue={sp.type ?? ""}
-              className="h-9 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
-            >
+            <Select id="type" name="type" defaultValue={sp.type ?? ""}>
               <option value="">Tous</option>
               {TYPES.map((t) => (
                 <option key={t} value={t}>
                   {t}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
           <div>
             <Label htmlFor="level">Niveau</Label>
-            <select
-              id="level"
-              name="level"
-              defaultValue={sp.level ?? ""}
-              className="h-9 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
-            >
+            <Select id="level" name="level" defaultValue={sp.level ?? ""}>
               <option value="">Tous</option>
               {LEVELS.map((l) => (
                 <option key={l} value={l}>
                   {l}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
           <div>
             <Label htmlFor="from">Du</Label>

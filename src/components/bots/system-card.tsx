@@ -52,11 +52,19 @@ export function SystemCard({
   }
 
   return (
-    <Card className={!system.available ? "opacity-60" : undefined}>
+    <Card
+      className={cn(
+        "transition-shadow duration-150",
+        !system.available && "opacity-60",
+        enabled && system.available && "border-accent/30"
+      )}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          {/* eslint-disable-next-line react-hooks/static-components -- stable lookup from a static registry, not a dynamically created component */}
-          <Icon className="size-4.5 text-foreground-muted" />
+          <span className={cn("icon-circle size-8", enabled && system.available ? "bg-accent/16 text-accent" : "bg-surface-hover text-foreground-muted")}>
+            {/* eslint-disable-next-line react-hooks/static-components -- stable lookup from a static registry, not a dynamically created component */}
+            <Icon className="size-4" />
+          </span>
           <p className="text-sm font-semibold text-foreground">{system.label}</p>
         </div>
         <Switch
@@ -71,7 +79,8 @@ export function SystemCard({
 
       <div className="mt-4 flex items-center justify-between">
         {system.available ? (
-          <span className="text-xs font-medium text-foreground-subtle">
+          <span className={cn("inline-flex items-center gap-1.5 text-xs font-medium", enabled ? "text-success" : "text-foreground-subtle")}>
+            <span className={cn("size-1.5 rounded-full", enabled ? "bg-success" : "bg-foreground-subtle")} />
             {enabled ? "Activé" : "Désactivé"}
           </span>
         ) : (

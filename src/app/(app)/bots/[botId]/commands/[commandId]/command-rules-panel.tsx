@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Card } from "@/components/ui/card";
@@ -55,11 +56,11 @@ function RolePicker({
         ))}
       </div>
       {available.length > 0 && (
-        <select
+        <Select
           value=""
           onChange={(e) => e.target.value && onToggle(field, e.target.value)}
-          className="w-full rounded-lg border border-border bg-background px-3 py-1.5 text-sm text-foreground"
           disabled={pending}
+          aria-label="Ajouter un rôle"
         >
           <option value="">+ Ajouter un rôle…</option>
           {available.map((r) => (
@@ -67,7 +68,7 @@ function RolePicker({
               {r.name}
             </option>
           ))}
-        </select>
+        </Select>
       )}
     </div>
   );
@@ -107,11 +108,11 @@ function ChannelPicker({
         ))}
       </div>
       {available.length > 0 && (
-        <select
+        <Select
           value=""
           onChange={(e) => e.target.value && onToggle(field, e.target.value)}
-          className="w-full rounded-lg border border-border bg-background px-3 py-1.5 text-sm text-foreground"
           disabled={pending}
+          aria-label="Ajouter un salon"
         >
           <option value="">+ Ajouter un salon…</option>
           {available.map((c) => (
@@ -119,7 +120,7 @@ function ChannelPicker({
               #{c.name}
             </option>
           ))}
-        </select>
+        </Select>
       )}
     </div>
   );
