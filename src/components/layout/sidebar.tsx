@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Settings as SettingsIcon, PanelLeftClose, PanelLeftOpen, Bot as BotIcon } from "lucide-react";
+import { LayoutDashboard, Settings as SettingsIcon, PanelLeftClose, PanelLeftOpen, Bot as BotIcon, History } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "./sidebar-context";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -44,6 +44,9 @@ export function Sidebar({ bots }: { bots: BotSummary[] }) {
       <nav className="flex-1 overflow-y-auto px-2 py-3">
         <NavLink href="/dashboard" icon={LayoutDashboard} active={pathname === "/dashboard"} collapsed={collapsed}>
           Tableau de bord
+        </NavLink>
+        <NavLink href="/activity" icon={History} active={pathname === "/activity"} collapsed={collapsed}>
+          Activité
         </NavLink>
 
         {!collapsed && (
