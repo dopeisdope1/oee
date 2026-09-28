@@ -64,6 +64,47 @@ export interface Command {
   enabledForGuild?: boolean;
 }
 
+export interface GuildRole {
+  id: string;
+  name: string;
+  color: string; // hex, e.g. "#5865f2"
+  position: number;
+  managed: boolean; // true = bot/integration role, can't be manually assigned
+  memberCount: number;
+}
+
+export type GuildChannelType = number; // raw discord.js ChannelType
+
+export interface GuildChannel {
+  id: string;
+  name: string;
+  type: GuildChannelType;
+  parentId: string | null;
+}
+
+/**
+ * Per-command, per-guild permission rule — the bot's own utils/
+ * commandRules.js is the single source of truth (see architecture doc §5b);
+ * this type mirrors it exactly, never a second schema.
+ */
+export interface CommandRule {
+  allowedRoles: string[];
+  deniedRoles: string[];
+  allowedUsers: string[];
+  deniedUsers: string[];
+  allowedChannels: string[];
+  deniedChannels: string[];
+  cooldownSeconds: number | null;
+  updatedAt: string | null;
+}
+
+/** One (add/remove) action against a CommandRule's list fields, or a cooldown/reset action —
+ * mirrors exactly the action vocabulary utils/apiServer.js accepts, never invents a new shape. */
+export type CommandRuleAction =
+  | { action: "toggleAllowedRole" | "toggleDeniedRole" | "toggleAllowedUser" | "toggleDeniedUser" | "toggleAllowedChannel" | "toggleDeniedChannel"; id: string }
+  | { action: "setCooldown"; seconds: number | null }
+  | { action: "reset" };
+
 export interface MessageTemplate {
   key: string;
   guildId: string | null;
@@ -146,6 +187,9 @@ export type Capability =
   | "guilds"
   | "guildConfig"
   | "commands"
+  | "commandRules"
+  | "roles"
+  | "channels"
   | "systems"
   | "messages"
   | "logs"
