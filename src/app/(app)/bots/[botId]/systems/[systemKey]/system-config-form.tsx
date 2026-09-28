@@ -72,12 +72,17 @@ export function SystemConfigForm({
     <div className="grid gap-6 lg:grid-cols-2">
       <div className="space-y-4">
         <div className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2.5">
-          <span className="text-sm font-medium text-foreground">Activé</span>
+          <div>
+            <span className="text-sm font-medium text-foreground">Système activé</span>
+            <p className="text-xs text-foreground-subtle">Désactive-le pour couper cette fonction sans perdre sa configuration.</p>
+          </div>
           <Switch checked={enabled} onCheckedChange={setEnabled} />
         </div>
 
         {fields ? (
-          fields.map((field) => (
+          <>
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-foreground-subtle">Réglages</p>
+          {fields.map((field) => (
             <div key={field.key}>
               {field.type === "boolean" ? (
                 <div className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2.5">
@@ -109,7 +114,8 @@ export function SystemConfigForm({
                 </>
               )}
             </div>
-          ))
+          ))}
+          </>
         ) : (
           <div>
             <Label htmlFor="raw-config">Configuration (JSON)</Label>
