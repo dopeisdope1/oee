@@ -56,26 +56,40 @@ export function Sidebar({ bots }: { bots: BotSummary[] }) {
           </p>
         )}
         <div className="space-y-0.5">
-          {bots.map((bot) => (
-            <Link
-              key={bot.id}
-              href={`/bots/${bot.id}/overview`}
-              className={cn(
-                "flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-colors",
-                bot.id === activeBotId
-                  ? "bg-accent/15 text-foreground"
-                  : "text-foreground-muted hover:bg-surface-hover hover:text-foreground"
-              )}
-            >
-              <BotAvatar name={bot.name} avatarUrl={bot.avatarUrl} size={6} />
-              {!collapsed && (
-                <span className="flex flex-1 items-center justify-between gap-2 truncate">
-                  <span className="truncate">{bot.name}</span>
-                  <StatusBadge state={bot.status.state} showLabel={false} className="shrink-0" />
-                </span>
-              )}
-            </Link>
-          ))}
+          {bots.map((bot) => {
+            const isActive = bot.id === activeBotId;
+            return (
+              <Link
+                key={bot.id}
+                href={`/bots/${bot.id}/overview`}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "relative flex items-center gap-2.5 rounded-lg py-1.5 pr-2 text-sm transition-colors",
+                  collapsed ? "pl-2" : "pl-2.5",
+                  isActive
+                    ? "bg-accent/12 font-medium text-foreground"
+                    : "text-foreground-muted hover:bg-surface-hover hover:text-foreground"
+                )}
+              >
+                {isActive && (
+                  <span className="absolute inset-y-1 left-0 w-0.5 rounded-full bg-accent" aria-hidden />
+                )}
+                <BotAvatar name={bot.name} avatarUrl={bot.avatarUrl} size={6} />
+                {!collapsed && (
+                  <span className="flex flex-1 items-center justify-between gap-2 truncate">
+                    <span className="truncate">{bot.name}</span>
+                    {isActive ? (
+                      <span className="shrink-0 rounded-full bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold text-accent">
+                        Actif
+                      </span>
+                    ) : (
+                      <StatusBadge state={bot.status.state} showLabel={false} className="shrink-0" />
+                    )}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
         </div>
 
         {activeBot &&
